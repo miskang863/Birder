@@ -5,91 +5,42 @@ import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.google.android.gms.location.*
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import androidx.fragment.app.Fragment
+import com.example.birder.fragments.FavoritesFragment
+import com.example.birder.fragments.HomeFragment
+import com.example.birder.fragments.MapFragment
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationRequest: LocationRequest
-    private lateinit var locationCallback: LocationCallback
-    private lateinit var map: GoogleMap
-    private val LOCATION_PERMISSION_REQUEST = 99
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-    private fun getAddress(lat: Double?, lng: Double?): String {
-        val geocoder = Geocoder(this)
-        val list = geocoder.getFromLocation(lat?:0.0, lng?:0.0, 1)
-        return list[0].getAddressLine(0)
-    }
-
-    private fun getLocationAccess() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            map.isMyLocationEnabled = true
-            getLocationUpdates()
-            startLocationUpdates()
-        }
-        else
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (requestCode == LOCATION_PERMISSION_REQUEST) {
-            if (grantResults.contains(PackageManager.PERMISSION_GRANTED)) {
-                getLocationAccess()
-            }
-        }
-    }
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.myMap) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-    }
+        val homeFragment = HomeFragment()
+        val favoritesFragment = FavoritesFragment()
+        val mapFragment = MapFragment()
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        makeCurrentFragment(homeFragment)
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-        map.uiSettings.isZoomControlsEnabled = true
-        getLocationAccess()
-        getLocationUpdates()
-    }
-
-    private fun getLocationUpdates() {
-        locationRequest = LocationRequest()
-        locationRequest.interval = 20000
-        locationRequest.fastestInterval = 15000
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                if (locationResult.locations.isNotEmpty()) {
-                    val location = locationResult.lastLocation
-                    if (location != null) {
-                        val latLng = LatLng(location.latitude, location.longitude)
-                        val markerOptions = MarkerOptions().position(latLng)
-                                .title("Latitude and Longitude")
-                                .snippet("Y: ${location.latitude} X: ${location.longitude}${getAddress(location.latitude, location.longitude)}")
-                        map.addMarker(markerOptions)
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-                    }
-                }
+        bottomNavigation.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.ic_home -> makeCurrentFragment(homeFragment)
+                R.id.ic_favorite -> makeCurrentFragment(favoritesFragment)
+                R.id.ic_map -> makeCurrentFragment(mapFragment)
             }
+            true
         }
+
     }
-    private fun startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED) {
-            return
+
+    private fun makeCurrentFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fl_wrapper, fragment)
+            commit()
         }
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+
     }
+
 }
