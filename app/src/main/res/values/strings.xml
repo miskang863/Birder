@@ -2,4 +2,9 @@
     <string name="app_name">Birder</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Search">Search</string>
+    <string name="SearchInfo">Search birds from wikipedia</string>
+    <string name="bird_specie">Bird Species</string>
+    <string name="description">Description:</string>
+
 </resources>
