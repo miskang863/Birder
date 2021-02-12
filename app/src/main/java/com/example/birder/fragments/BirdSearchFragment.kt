@@ -74,7 +74,6 @@ class BirdSearchFragment : Fragment() {
                 return false
             }
         })
-
         return view
     }
 
@@ -112,6 +111,7 @@ class BirdSearchFragment : Fragment() {
         }
     }
 
+    //Open wikipedia page
     private fun goToUrl(url: String) {
         val uri = Uri.parse(url)
         startActivity(Intent(Intent.ACTION_VIEW, uri))
