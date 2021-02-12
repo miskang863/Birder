@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.example.birder.R
 import com.example.birder.WikiApi
+import com.example.birder.imageApi.BirdImageJson
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -90,17 +91,27 @@ class BirdSearchFragment : Fragment() {
         //API calls
         val call = WikiApi.service
         GlobalScope.launch(Dispatchers.IO) {
-            val response =
+            val response: BirdImageJson? =
                 call.bird("query", "json", 2, "pageimages|pageterms", "original", birdSpecies)
-            val img = response.query.pages[0].original.source
-            val birdWikiUrl = "http://en.wikipedia.org/wiki?curid=${response.query.pages[0].pageid}"
-            var birdDescText = response.query.pages[0].terms.description.toString()
+
+            val img = response?.query?.pages?.get(0)?.original?.source
+                ?: "https://images.freeimages.com/images/large-previews/8e8/black-bird-1172941.jpg"
+
+            val birdWikiUrl =
+                "http://en.wikipedia.org/wiki?curid=${response?.query?.pages?.get(0)?.pageid}"
+
+            var birdDescText = response?.query?.pages?.get(0)?.terms?.description.toString()
             birdDescText = birdDescText.replace("[", "").replace("]", "").capitalize(Locale.ROOT)
 
+            if(birdDescText == "Null"){
+                birdDescText = "Description not found"
+            }
             //Handle the UI
             withContext(Dispatchers.Main) {
                 birdDescriptionTextView.text = birdDescText
-                birdNameTextView.text = response.query.pages[0].title
+                if (response != null) {
+                    birdNameTextView.text = response.query.pages[0].title
+                }
                 Picasso.get().load(img).into(searchImageView)
                 searchImageButton.visibility = VISIBLE
 

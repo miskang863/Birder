@@ -59,6 +59,7 @@ class HomeFragment : Fragment() {
         return view
     }
 
+
     private fun getPhotoFile(fileName: String): File {
         val storageDirectory = view?.context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(fileName, ".jpg", storageDirectory)
