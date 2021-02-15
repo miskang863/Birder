@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val homeFragment = HomeFragment()
-        val favoritesFragment = FavoritesFragment(birds)
+        val favoritesFragment = FavoritesFragment()
         val mapFragment = MapFragment()
         val birdSearchFragment = BirdSearchFragment()
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)

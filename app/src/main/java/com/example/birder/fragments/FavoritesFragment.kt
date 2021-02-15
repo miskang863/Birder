@@ -8,17 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.birder.Bird
-import com.example.birder.BirdListAdapter
-import com.example.birder.MainActivity
-import com.example.birder.R
+import com.example.birder.*
 
-class FavoritesFragment(
- //   private val listener: BirdListAdapter.OnItemClickListener,
-    private val birds: MutableList<Bird>
-) : Fragment() {
+class FavoritesFragment : Fragment() {
+
+    private lateinit var mBirdViewModel: BirdViewModel
 
     lateinit var recyclerView: RecyclerView
 
@@ -29,12 +27,16 @@ class FavoritesFragment(
 
         val v = inflater.inflate(R.layout.fragment_favorites, container, false)
 
+        val adapter = BirdListAdapter()
         recyclerView = v.findViewById(R.id.recyclerView)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(view?.context)
+      //  recyclerView.setHasFixedSize(true)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        recyclerView.adapter = BirdListAdapter(birds)
-           // recyclerView.adapter = BirdListAdapter(birds, listener)
+        mBirdViewModel = ViewModelProvider(this).get(BirdViewModel::class.java)
+        mBirdViewModel.readAllData.observe(viewLifecycleOwner, Observer { bird ->
+            adapter.setData(bird)
+        })
 
        val fab: View = v.findViewById(R.id.addFromFile)
         fab.setOnClickListener {
