@@ -14,12 +14,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
+    private val birds: MutableList<Bird> = GlobalModel.birds
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val homeFragment = HomeFragment()
-        val favoritesFragment = FavoritesFragment()
+        val favoritesFragment = FavoritesFragment(birds)
         val mapFragment = MapFragment()
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         makeCurrentFragment(homeFragment)
