@@ -15,5 +15,10 @@
         android:icon="@drawable/ic_map"
         android:title="Map"/>
 
+    <item
+        android:id="@+id/ic_search"
+        android:icon="@drawable/ic_search"
+        android:title="Search"/>
+
 
 </menu>

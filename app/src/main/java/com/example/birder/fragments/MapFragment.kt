@@ -67,8 +67,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onCreateView(
@@ -109,11 +107,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                             .title("Latitude and Longitude")
                             .snippet(
                                 "Y: ${location.latitude} X: ${location.longitude}${
-                                    getAddress(
-                                        location.latitude,
-                                        location.longitude
-                                    )
-                                }"
+                                    getAddress(location.latitude, location.longitude)}"
                             )
                         map.addMarker(markerOptions)
                         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
