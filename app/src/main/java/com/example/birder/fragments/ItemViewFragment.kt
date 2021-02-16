@@ -9,7 +9,7 @@ import android.widget.Button
 import com.example.birder.R
 
 class ItemViewFragment(
-    private var popBackStackImmediate: Boolean
+  //  private var popBackStackImmediate: Boolean
 ) : Fragment() {
 
     override fun onCreateView(
@@ -26,7 +26,7 @@ return view
         super.onViewCreated(view, savedInstanceState)
 
         view.findViewById<Button>(R.id.btn_back).setOnClickListener {
-            popBackStackImmediate = true
+          //  popBackStackImmediate = true
         }
     }
     }

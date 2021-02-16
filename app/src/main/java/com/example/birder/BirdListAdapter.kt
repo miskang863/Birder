@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +29,10 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
         val bird = birdList[position]
         holder.itemName.text = bird.name
         holder.itemDesc.text = bird.description
+
+        holder.itemView.setOnClickListener {
+            Log.d("testi", "${bird.name} CLICKEDD")
+        }
 
         val bitmap = BitmapFactory.decodeFile(bird.imageFilePath)
         Log.d("testi", "${bird.name} filepath: ${bird.imageFilePath}")
@@ -53,6 +58,7 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
         }
 
         override fun onClick(v: View?) {
+            Log.d("testi","CLICKED")
         }
     }
 
