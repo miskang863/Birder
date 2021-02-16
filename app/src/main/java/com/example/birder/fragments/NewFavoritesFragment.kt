@@ -63,9 +63,12 @@ class NewFavoritesFragment : Fragment() {
         val button: Button = view.findViewById(R.id.galleryButton)
         val button2: Button = view.findViewById(R.id.btn_save)
 
+        requestPermission()
 
-        //Take photo with camera
+
+        //Take photo with camera button
         cameraButton.setOnClickListener {
+            getLastLocation()
             val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             photoFile = getPhotoFile(FILE_NAME)
 
@@ -76,17 +79,12 @@ class NewFavoritesFragment : Fragment() {
             )
 
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
-
-            if (takePictureIntent.resolveActivity(activity?.packageManager!!) != null) {
-                startActivityForResult(takePictureIntent, REQUEST_CODE)
-            } else {
-                Toast.makeText(view.context, "Unable to open camera", Toast.LENGTH_SHORT).show()
-            }
+            startActivity(takePictureIntent)
         }
 
-        //Take photo from gallery
+        //Take photo from gallery button
         button.setOnClickListener {
-
+            getLastLocation()
             photoFile = getPhotoFile(FILE_NAME)
 
             val fileProvider = FileProvider.getUriForFile(
@@ -103,10 +101,11 @@ class NewFavoritesFragment : Fragment() {
         button2.setOnClickListener {
             insertDataToDatabase()
         }
+
         container?.removeAllViews()
 
-        fusedLocationClient = activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!
-        getLastLocation()
+        fusedLocationClient =
+            activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!
 
         return view
     }
@@ -140,15 +139,30 @@ class NewFavoritesFragment : Fragment() {
         var name = editText1.text.toString()
         var desc = editText2.text.toString()
 
+
         // val uriPathHelper = URIPathHelper()
         //  val filePath = imageUri?.let { uriPathHelper.getPath(requireContext(), it) }
-        val bird = Bird(0, name, desc, photoFile.absolutePath)
+        val bird =
+            mLocation?.let {
+                Bird(
+                    0,
+                    name,
+                    desc,
+                    imageUri.toString(),
+                    it.longitude,
+                    mLocation!!.latitude
+                )
+            }
 
-        mBirdViewModel.addBird(bird)
-        Toast.makeText(requireContext(), "Bird added", Toast.LENGTH_LONG).show()
+        if (bird != null) {
+            mBirdViewModel.addBird(bird)
+            Toast.makeText(requireContext(), "Bird added", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(requireContext(), "Adding bird failed", Toast.LENGTH_LONG).show()
+        }
     }
 
-    fun getLastLocation() {
+    private fun getLastLocation() {
         if (activity?.let {
                 ActivityCompat.checkSelfPermission(
                     it,
@@ -167,6 +181,7 @@ class NewFavoritesFragment : Fragment() {
                 }
         }
     }
+
     private fun requestPermission() {
         activity?.let {
             ActivityCompat.requestPermissions(
@@ -176,5 +191,4 @@ class NewFavoritesFragment : Fragment() {
             )
         }
     }
-
 }

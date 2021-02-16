@@ -21,7 +21,6 @@
             android:layout_marginStart="343dp"
             android:layout_marginTop="330dp"
             android:contentDescription="TODO"
-            android:text="File"
             app:fabSize="auto" />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -4,12 +4,19 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.birder.Bird
+import com.example.birder.BirdViewModel
 import com.example.birder.R
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -25,6 +32,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationCallback: LocationCallback
     private lateinit var map: GoogleMap
     private val LOCATION_PERMISSION_REQUEST = 99
+    private lateinit var mBirdViewModel: BirdViewModel
+    private var birdList = emptyList<Bird>()
+
+
 
     private fun getAddress(lat: Double?, lng: Double?): String {
         val geocoder = Geocoder(activity)
@@ -64,11 +75,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -80,8 +86,29 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager?.findFragmentById(R.id.myMap) as SupportMapFragment
         mapFragment.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(v.context)
+
+        //Get birds from DB
+        mBirdViewModel = ViewModelProvider(this).get(BirdViewModel::class.java)
+        mBirdViewModel.readAllData.observe(viewLifecycleOwner, Observer { bird ->
+            run {
+                birdList = bird
+                birdList.forEach { it ->
+                    Log.d("testi", "${it.name} LONGITUDE: ${it.longitude} LATITUDE: ${it.latitude}")
+                }
+            }
+        })
+
+      /*
+        birdList.forEach { it ->
+            Log.d("testi", "${it.name} LONGITUDE: ${it.longitude} LATITUDE: ${it.latitude}")
+        }
+*/
         return v
 
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
