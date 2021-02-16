@@ -47,8 +47,7 @@ class NewFavoritesFragment : Fragment() {
 
     val RequestPermissionCode = 1
     var mLocation: Location? = null
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -106,7 +105,7 @@ class NewFavoritesFragment : Fragment() {
         }
         container?.removeAllViews()
 
-        fusedLocationProviderClient = activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!
+        fusedLocationClient = activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!
         getLastLocation()
 
         return view
@@ -159,28 +158,15 @@ class NewFavoritesFragment : Fragment() {
         ) {
             requestPermission()
         } else {
-            fusedLocationProviderClient.lastLocation
+            fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
                     mLocation = location
-                    Log.d("testi","DOIN SHIT")
-
                     if (location != null) {
-                        Log.d("testi", "JEEEE")
-
                         Log.d("testi", location.latitude.toString())
-
-                        /*  latitude.text = location.latitude.toString()
-                          longitude.text = location.longitude.toString()
-                          time.text = android.text.format.DateFormat.getTimeFormat(applicationContext)
-                              .format(location.time)
-                          date.text =
-                              android.text.format.DateFormat.getDateFormat(getApplicationContext())
-                                  .format(location.time) */
                     }
                 }
         }
     }
-
     private fun requestPermission() {
         activity?.let {
             ActivityCompat.requestPermissions(
@@ -190,6 +176,5 @@ class NewFavoritesFragment : Fragment() {
             )
         }
     }
-
 
 }
