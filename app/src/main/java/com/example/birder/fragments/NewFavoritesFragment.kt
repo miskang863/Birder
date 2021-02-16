@@ -1,6 +1,5 @@
 package com.example.birder.fragments
 
-import android.Manifest
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -26,8 +25,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.birder.*
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import java.io.File
+import android.Manifest
+import com.google.android.gms.location.LocationServices
+
 
 private const val FILE_NAME = "photo.jpg"
 private lateinit var photoFile: File
@@ -106,6 +107,7 @@ class NewFavoritesFragment : Fragment() {
 
         fusedLocationClient = activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!
         getLastLocation()
+
         return view
     }
 
@@ -145,6 +147,7 @@ class NewFavoritesFragment : Fragment() {
         mBirdViewModel.addBird(bird)
         Toast.makeText(requireContext(), "Bird added", Toast.LENGTH_LONG).show()
     }
+
     fun getLastLocation() {
         if (activity?.let {
                 ActivityCompat.checkSelfPermission(
@@ -159,7 +162,7 @@ class NewFavoritesFragment : Fragment() {
                 .addOnSuccessListener { location: Location? ->
                     mLocation = location
                     if (location != null) {
-                        println("DBG" + location.latitude + location.longitude)
+                        Log.d("testi", location.latitude.toString())
                     }
                 }
         }
@@ -173,4 +176,5 @@ class NewFavoritesFragment : Fragment() {
             )
         }
     }
+
 }
