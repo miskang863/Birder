@@ -12,5 +12,5 @@ data class Bird(
     val id: Int,
     var name: String,
     var description: String,
-    val imageUriString: String
+    val imageFilePath: String
 )

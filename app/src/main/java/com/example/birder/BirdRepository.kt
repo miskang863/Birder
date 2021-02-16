@@ -9,4 +9,8 @@ class BirdRepository(private val birdDao: BirdDao) {
     suspend fun addBird(bird: Bird){
         birdDao.addBird(bird)
     }
+
+    suspend fun updateBird(bird: Bird){
+        birdDao.updateBird(bird)
+    }
 }

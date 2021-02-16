@@ -37,11 +37,6 @@ class BirdSearchFragment : Fragment() {
     lateinit var searchImageView: ImageView
     lateinit var searchImageButton: ImageButton
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

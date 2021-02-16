@@ -23,4 +23,10 @@ class BirdViewModel(application: Application): AndroidViewModel(application) {
             repository.addBird(bird)
         }
     }
+
+    fun updateBird(bird: Bird){
+        viewModelScope.launch(Dispatchers.IO){
+            repository.updateBird(bird)
+        }
+    }
 }
