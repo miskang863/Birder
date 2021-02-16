@@ -4,12 +4,12 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -30,16 +30,12 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
         holder.itemName.text = bird.name
         holder.itemDesc.text = bird.description
 
+        Log.d("testi", "${bird.name} filepath: ${bird.imageFilePath}")
+        holder.imageThumbnail.setImageURI(Uri.parse(bird.imageFilePath))
+
         holder.itemView.setOnClickListener {
             Log.d("testi", "${bird.name} CLICKEDD")
         }
-
-        val bitmap = BitmapFactory.decodeFile(bird.imageFilePath)
-        Log.d("testi", "${bird.name} filepath: ${bird.imageFilePath}")
-        if (bitmap == null) {
-            Log.d("testi", "${bird.name} null bitmap :-(")
-        }
-        holder.imageThumbnail.setImageBitmap(bitmap)
     }
 
     override fun getItemCount(): Int {
@@ -57,8 +53,7 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
             itemView.setOnClickListener(this)
         }
 
-        override fun onClick(v: View?) {
-            Log.d("testi","CLICKED")
+        override fun onClick(v: View?, ) {
         }
     }
 
