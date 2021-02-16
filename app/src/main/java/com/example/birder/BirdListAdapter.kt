@@ -1,12 +1,13 @@
-package com.example.birder
-
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.birder.Bird
+import com.example.birder.R
 
 class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>() {
     private var birdList = emptyList<Bird>()
@@ -23,6 +24,7 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
         holder.itemName.text = bird.name
         holder.itemDesc.text = bird.description
         holder.imageThumbnail.setImageURI(Uri.parse(bird.imageUriString))
+
     }
 
     override fun getItemCount(): Int {
@@ -41,15 +43,15 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
         }
 
         override fun onClick(v: View?) {
+            val position: Int = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+            }
         }
-    }
 
-    interface OnItemClickListener {
-        fun onItemClick(position: Int)
     }
-
     fun setData(bird: List<Bird>) {
         this.birdList = bird
         notifyDataSetChanged()
     }
+
 }

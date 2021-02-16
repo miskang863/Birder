@@ -1,8 +1,11 @@
 package com.example.birder.fragments
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,12 +16,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.birder.Bird
 import com.example.birder.BirdViewModel
 import com.example.birder.GlobalModel
 import com.example.birder.R
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 class NewFavoritesFragment : Fragment() {
     private lateinit var mBirdViewModel: BirdViewModel
@@ -28,6 +34,10 @@ class NewFavoritesFragment : Fragment() {
     lateinit var bitmap: Bitmap
     lateinit var editText1: EditText
     lateinit var editText2: EditText
+
+    val RequestPermissionCode = 1
+    var mLocation: Location? = null
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,8 +54,8 @@ class NewFavoritesFragment : Fragment() {
         val v = inflater.inflate(R.layout.fragment_newfavorites, container, false)
 
         mBirdViewModel = ViewModelProvider(this).get(BirdViewModel::class.java)
-        editText1 = v.findViewById<EditText>(R.id.editName)
-        editText2 = v.findViewById<EditText>(R.id.editDesc)
+        editText1 = v.findViewById(R.id.editName)
+        editText2 = v.findViewById(R.id.editDesc)
 
         imageView = v.findViewById(R.id.imageView)
         val button: Button = v.findViewById(R.id.btn_file)
@@ -60,6 +70,9 @@ class NewFavoritesFragment : Fragment() {
             insertDataToDatabase()
         }
         container?.removeAllViews()
+
+        fusedLocationProviderClient = activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!
+        getLastLocation()
         return v
     }
 
@@ -82,4 +95,39 @@ class NewFavoritesFragment : Fragment() {
         Toast.makeText(requireContext(), "Bird added", Toast.LENGTH_LONG).show()
     }
 
+    fun getLastLocation() {
+        if (activity?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermission()
+        } else {
+            fusedLocationProviderClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    mLocation = location
+                    if (location != null) {
+
+                      /*  latitude.text = location.latitude.toString()
+                        longitude.text = location.longitude.toString()
+                        time.text = android.text.format.DateFormat.getTimeFormat(applicationContext)
+                            .format(location.time)
+                        date.text =
+                            android.text.format.DateFormat.getDateFormat(getApplicationContext())
+                                .format(location.time) */
+                    }
+                }
+        }
+    }
+    private fun requestPermission() {
+        activity?.let {
+            ActivityCompat.requestPermissions(
+                it,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                RequestPermissionCode
+            )
+        }
+    }
 }

@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.example.birder.Bird
 import com.example.birder.R
 
 class ItemViewFragment(
+    private val birdInfo: Bird,
     private var popBackStackImmediate: Boolean
 ) : Fragment() {
 
