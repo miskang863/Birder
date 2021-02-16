@@ -1,10 +1,13 @@
 package com.example.birder.fragments
 
+import android.Manifest
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -17,10 +20,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.birder.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import java.io.File
 
 private const val FILE_NAME = "photo.jpg"
@@ -37,6 +43,10 @@ class NewFavoritesFragment : Fragment() {
     lateinit var bitmap: Bitmap
     lateinit var editText1: EditText
     lateinit var editText2: EditText
+
+    val RequestPermissionCode = 1
+    var mLocation: Location? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -93,6 +103,9 @@ class NewFavoritesFragment : Fragment() {
             insertDataToDatabase()
         }
         container?.removeAllViews()
+
+        fusedLocationClient = activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!
+        getLastLocation()
         return view
     }
 
@@ -132,5 +145,32 @@ class NewFavoritesFragment : Fragment() {
         mBirdViewModel.addBird(bird)
         Toast.makeText(requireContext(), "Bird added", Toast.LENGTH_LONG).show()
     }
-
+    fun getLastLocation() {
+        if (activity?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermission()
+        } else {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    mLocation = location
+                    if (location != null) {
+                        println("DBG" + location.latitude + location.longitude)
+                    }
+                }
+        }
+    }
+    private fun requestPermission() {
+        activity?.let {
+            ActivityCompat.requestPermissions(
+                it,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                RequestPermissionCode
+            )
+        }
+    }
 }
