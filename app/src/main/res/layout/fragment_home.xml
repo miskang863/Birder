@@ -6,21 +6,5 @@
     android:orientation="vertical"
     tools:context=".fragments.HomeFragment">
 
-    <Button
-        android:id="@+id/takePicBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:text="Take Pic"/>
-
-    <ImageView
-        android:id="@+id/camImageView"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginTop="16dp"
-        android:src="@mipmap/ic_launcher"/>
-
-
 
 </LinearLayout>

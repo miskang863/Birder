@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.birder.fragments.BirdSearchFragment
 import com.example.birder.fragments.FavoritesFragment
@@ -27,6 +28,27 @@ class MainActivity : AppCompatActivity() {
         val birdSearchFragment = BirdSearchFragment()
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         makeCurrentFragment(homeFragment)
+
+        if (ActivityCompat.checkSelfPermission(
+                this@MainActivity,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this@MainActivity,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this@MainActivity,
+                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                99
+            )
+            ActivityCompat.requestPermissions(
+                this@MainActivity,
+                arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                99
+            )
+        }
 
         bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {

@@ -1,11 +1,15 @@
 package com.example.birder.fragments
 
+import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,62 +17,107 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.birder.Bird
-import com.example.birder.BirdViewModel
-import com.example.birder.GlobalModel
-import com.example.birder.R
+import com.example.birder.*
+import java.io.File
+
+private const val FILE_NAME = "photo.jpg"
+private lateinit var photoFile: File
+private const val REQUEST_CODE = 42
+private const val gallery_image_code = 100
+
 
 class NewFavoritesFragment : Fragment() {
     private lateinit var mBirdViewModel: BirdViewModel
-    private val pickImage = 100
+    private val gallery_image_code = 100
     private var imageUri: Uri? = null
     lateinit var imageView: ImageView
     lateinit var bitmap: Bitmap
     lateinit var editText1: EditText
     lateinit var editText2: EditText
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.fragment_newfavorites, container, false)
+        val view = inflater.inflate(R.layout.fragment_newfavorites, container, false)
 
         mBirdViewModel = ViewModelProvider(this).get(BirdViewModel::class.java)
-        editText1 = v.findViewById<EditText>(R.id.editName)
-        editText2 = v.findViewById<EditText>(R.id.editDesc)
+        editText1 = view.findViewById<EditText>(R.id.editName)
+        editText2 = view.findViewById<EditText>(R.id.editDesc)
+        imageView = view.findViewById(R.id.imageView)
+        val cameraButton = view.findViewById<Button>(R.id.cameraButton)
+        val button: Button = view.findViewById(R.id.galleryButton)
+        val button2: Button = view.findViewById(R.id.btn_save)
 
-        imageView = v.findViewById(R.id.imageView)
-        val button: Button = v.findViewById(R.id.btn_file)
-        button.setOnClickListener {
-            val gallery =
-                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(gallery, pickImage)
+
+        //Take photo with camera
+        cameraButton.setOnClickListener {
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            photoFile = getPhotoFile(FILE_NAME)
+
+            val fileProvider = FileProvider.getUriForFile(
+                view.context,
+                "com.example.birder.fileprovider",
+                photoFile
+            )
+
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
+
+            if (takePictureIntent.resolveActivity(activity?.packageManager!!) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_CODE)
+            } else {
+                Toast.makeText(view.context, "Unable to open camera", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        val button2: Button = v.findViewById(R.id.btn_save)
+        //Take photo from gallery
+        button.setOnClickListener {
+
+            photoFile = getPhotoFile(FILE_NAME)
+
+            val fileProvider = FileProvider.getUriForFile(
+                view.context,
+                "com.example.birder.fileprovider",
+                photoFile
+            )
+
+            val gallery = Intent(Intent.ACTION_PICK, fileProvider)
+            startActivityForResult(gallery, gallery_image_code)
+        }
+
+        //Save to database
         button2.setOnClickListener {
             insertDataToDatabase()
         }
         container?.removeAllViews()
-        return v
+        return view
     }
+
+    private fun getPhotoFile(fileName: String): File {
+        val storageDirectory = view?.context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(fileName, ".jpg", storageDirectory)
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && requestCode == pickImage) {
+        //Handle gallery image
+        if (resultCode == RESULT_OK && requestCode == gallery_image_code) {
             imageUri = data?.data
             // bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
             imageView.setImageURI(imageUri)
+        }
+
+        //Handle camera image
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            val takenImage = BitmapFactory.decodeFile(photoFile.path)
+            // Log.d("testi", photoFile.absolutePath)
+            imageView.setImageBitmap(takenImage)
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
@@ -76,7 +125,9 @@ class NewFavoritesFragment : Fragment() {
         var name = editText1.text.toString()
         var desc = editText2.text.toString()
 
-        val bird = Bird(0, name, desc, imageUri.toString())
+        // val uriPathHelper = URIPathHelper()
+        //  val filePath = imageUri?.let { uriPathHelper.getPath(requireContext(), it) }
+        val bird = Bird(0, name, desc, photoFile.absolutePath)
 
         mBirdViewModel.addBird(bird)
         Toast.makeText(requireContext(), "Bird added", Toast.LENGTH_LONG).show()
