@@ -13,4 +13,8 @@ class BirdRepository(private val birdDao: BirdDao) {
     suspend fun updateBird(bird: Bird){
         birdDao.updateBird(bird)
     }
+
+    suspend fun deleteBird(bird: Bird){
+        birdDao.deleteBird(bird)
+    }
 }

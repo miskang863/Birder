@@ -29,4 +29,10 @@ class BirdViewModel(application: Application): AndroidViewModel(application) {
             repository.updateBird(bird)
         }
     }
+
+    fun deleteBird(bird: Bird){
+        viewModelScope.launch(Dispatchers.IO){
+            repository.deleteBird(bird)
+        }
+    }
 }

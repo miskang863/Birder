@@ -1,5 +1,6 @@
 package com.example.birder
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.birder.fragments.SingleBirdFragment
 
 
 class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>() {
@@ -24,11 +27,23 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
         holder.itemName.text = bird.name
         holder.itemDesc.text = bird.description
 
-        Log.d("testi", "${bird.name} filepath: ${bird.imageFilePath}")
-        holder.imageThumbnail.setImageURI(Uri.parse(bird.imageFilePath))
+        Log.d("testi", "${bird.name} filepath: ${bird.imageUri}")
+        holder.imageThumbnail.setImageURI(Uri.parse(bird.imageUri))
 
         holder.itemView.setOnClickListener {
             Log.d("testi", "${bird.name} CLICKEDD")
+
+
+            val manager = (holder.itemView.context as FragmentActivity).supportFragmentManager
+
+            val singleBirdFragment = SingleBirdFragment(bird)
+
+            manager.beginTransaction().apply {
+                replace(R.id.favoritelayout, singleBirdFragment)
+                addToBackStack(null)
+                commit()
+            }
+
         }
     }
 

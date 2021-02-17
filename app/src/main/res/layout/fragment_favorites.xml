@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.FavoritesFragment">
+    tools:context=".fragments.FavoritesFragment"
+    android:id="@+id/favoritelayout"
+   >
 
 
     <RelativeLayout
-        android:id="@+id/favoritelayout"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

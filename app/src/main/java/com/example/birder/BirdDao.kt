@@ -15,5 +15,6 @@ interface BirdDao {
     @Update
     suspend fun updateBird(bird: Bird)
 
-
+    @Delete
+    suspend fun deleteBird(bird: Bird)
 }
