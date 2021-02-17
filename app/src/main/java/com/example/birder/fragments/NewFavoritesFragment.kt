@@ -56,8 +56,8 @@ class NewFavoritesFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_newfavorites, container, false)
 
         mBirdViewModel = ViewModelProvider(this).get(BirdViewModel::class.java)
-        editText1 = view.findViewById<EditText>(R.id.editName)
-        editText2 = view.findViewById<EditText>(R.id.editDesc)
+        editText1 = view.findViewById(R.id.editName)
+        editText2 = view.findViewById(R.id.editDesc)
         imageView = view.findViewById(R.id.imageView)
         val cameraButton = view.findViewById<Button>(R.id.cameraButton)
         val button: Button = view.findViewById(R.id.galleryButton)

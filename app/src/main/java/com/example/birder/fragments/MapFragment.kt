@@ -34,7 +34,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private val LOCATION_PERMISSION_REQUEST = 99
     private lateinit var mBirdViewModel: BirdViewModel
     private var birdList = emptyList<Bird>()
-
+    private var firstLoad = true
 
 
     private fun getAddress(lat: Double?, lng: Double?): String {
@@ -92,19 +92,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mBirdViewModel.readAllData.observe(viewLifecycleOwner, Observer { bird ->
             run {
                 birdList = bird
-                birdList.forEach { it ->
+                /*birdList.forEach { it ->
                     Log.d("testi", "${it.name} LONGITUDE: ${it.longitude} LATITUDE: ${it.latitude}")
-                }
+                } */
             }
         })
-
-      /*
-        birdList.forEach { it ->
-            Log.d("testi", "${it.name} LONGITUDE: ${it.longitude} LATITUDE: ${it.latitude}")
-        }
-*/
         return v
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -129,26 +122,34 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 if (locationResult.locations.isNotEmpty()) {
                     val location = locationResult.lastLocation
                     if (location != null) {
-                        val latLng = LatLng(location.latitude, location.longitude)
-                        val markerOptions = MarkerOptions().position(latLng)
-                            .title("Latitude and Longitude")
-                            .snippet(
-                                "Y: ${location.latitude} X: ${location.longitude}${
-                                    getAddress(location.latitude, location.longitude)}"
-                            )
-                        map.addMarker(markerOptions)
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                        birdList.forEach {
+                            val latLng = LatLng(it.latitude, it.longitude)
+                            val markerOptions = MarkerOptions().position(latLng)
+                                .title(it.name)
+                                .snippet(
+                                    "Y: ${"%.4f".format(latLng.latitude)} X: ${
+                                        "%.4f".format(latLng.longitude)
+                                    } ${getAddress(latLng.latitude, latLng.longitude)}"
+                                //.icon (A bitmap that's displayed in place of the default marker image.)
+                                )
+                            map.addMarker(markerOptions)
+
+                            if (firstLoad) {
+                                map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11f))
+                                firstLoad = false
+                            }
+                        }
                     }
                 }
             }
         }
     }
 
+
     private fun startLocationUpdates() {
         if (activity?.let {
                 ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_FINE_LOCATION
+                    it, Manifest.permission.ACCESS_FINE_LOCATION
                 )
             } !=
             PackageManager.PERMISSION_GRANTED && activity?.let {
@@ -161,6 +162,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
     }
+
+
 
 
 }

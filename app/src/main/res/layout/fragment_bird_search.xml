@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.BirdSearchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <EditText
         android:id="@+id/birdSearchEditText"
         android:layout_width="247dp"
