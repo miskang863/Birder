@@ -1,20 +1,14 @@
 package com.example.birder
 
-import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Environment
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
-import java.io.File
+
 
 class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>() {
     private var birdList = emptyList<Bird>()
