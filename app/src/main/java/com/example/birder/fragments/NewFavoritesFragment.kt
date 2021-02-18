@@ -6,11 +6,9 @@ import android.content.Intent
 import android.content.Intent.ACTION_OPEN_DOCUMENT
 import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -25,6 +23,8 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.example.birder.Bird
 import com.example.birder.BirdViewModel
@@ -96,11 +96,19 @@ class NewFavoritesFragment : Fragment() {
 
             val gallery = Intent(ACTION_OPEN_DOCUMENT, fileProvider)
             startActivityForResult(gallery, gallery_image_code)
+
         }
 
         //Save to database
         button2.setOnClickListener {
             insertDataToDatabase()
+
+            val fragment: Fragment = FavoritesFragment()
+            val fragmentManager: FragmentManager = activity!!.supportFragmentManager
+            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.relativeLayout, fragment)
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
         }
 
         container?.removeAllViews()
@@ -123,7 +131,8 @@ class NewFavoritesFragment : Fragment() {
         if (resultCode == RESULT_OK && requestCode == gallery_image_code) {
             imageUri = data?.data
             imageUri?.let {
-                data?.flags?.and((FLAG_GRANT_READ_URI_PERMISSION + Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                data?.flags?.and(
+                    (FLAG_GRANT_READ_URI_PERMISSION + Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 )?.let { it1 ->
                     context!!.contentResolver.takePersistableUriPermission(
                         it, it1
