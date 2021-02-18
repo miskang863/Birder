@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.birder.Bird
 import com.example.birder.BirdViewModel
+import com.example.birder.CustomInfoWindowAdapter
 import com.example.birder.R
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -35,6 +36,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mBirdViewModel: BirdViewModel
     private var birdList = emptyList<Bird>()
     private var firstLoad = true
+    lateinit var infoAdapter: CustomInfoWindowAdapter
+    private val birdUriMarkerMap = mutableMapOf<String, String>()
 
 
     private fun getAddress(lat: Double?, lng: Double?): String {
@@ -81,6 +84,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     ): View? {
         val v = inflater.inflate(R.layout.fragment_map, container, false)
 
+
         val supportFragmentManager = childFragmentManager
 
         val mapFragment = supportFragmentManager?.findFragmentById(R.id.myMap) as SupportMapFragment
@@ -92,11 +96,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mBirdViewModel.readAllData.observe(viewLifecycleOwner, Observer { bird ->
             run {
                 birdList = bird
-                /*birdList.forEach { it ->
-                    Log.d("testi", "${it.name} LONGITUDE: ${it.longitude} LATITUDE: ${it.latitude}")
-                } */
+
+                for ((x, n) in birdList.withIndex()) {
+                    birdUriMarkerMap["m$x"] = n.imageUri
+                }
+                Log.d("testi", birdUriMarkerMap.toString())
             }
         })
+
+
         return v
     }
 
@@ -107,6 +115,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         map.uiSettings.isZoomControlsEnabled = true
+        infoAdapter = CustomInfoWindowAdapter(requireContext(), birdUriMarkerMap)
+        map.setInfoWindowAdapter(infoAdapter)
         getLocationAccess()
         getLocationUpdates()
     }
@@ -127,10 +137,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                             val markerOptions = MarkerOptions().position(latLng)
                                 .title(it.name)
                                 .snippet(
-                                    "Y: ${"%.4f".format(latLng.latitude)} X: ${
-                                        "%.4f".format(latLng.longitude)
-                                    } ${getAddress(latLng.latitude, latLng.longitude)}"
-                                //.icon (A bitmap that's displayed in place of the default marker image.)
+                                    "${it.description}\n" +
+                                            "Y: ${"%.4f".format(latLng.latitude)} X: ${
+                                                "%.4f".format(latLng.longitude)
+                                            }\n" +
+                                            "${getAddress(latLng.latitude, latLng.longitude)}"
+
+                                    //.icon (A bitmap that's displayed in place of the default marker image.)
                                 )
                             map.addMarker(markerOptions)
 
@@ -162,8 +175,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
     }
-
-
 
 
 }

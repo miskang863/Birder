@@ -125,7 +125,8 @@ class NewFavoritesFragment : Fragment() {
         if (resultCode == RESULT_OK && requestCode == gallery_image_code) {
             imageUri = data?.data
             imageUri?.let {
-                data?.flags?.and((FLAG_GRANT_READ_URI_PERMISSION + Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                data?.flags?.and(
+                    (FLAG_GRANT_READ_URI_PERMISSION + Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 )?.let { it1 ->
                     context!!.contentResolver.takePersistableUriPermission(
                         it, it1
