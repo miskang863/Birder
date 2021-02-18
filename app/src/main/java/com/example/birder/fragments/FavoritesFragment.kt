@@ -49,7 +49,7 @@ class FavoritesFragment : Fragment() {
             commit()
         }
         }
-
+        container?.removeAllViews()
         return v
     }
 }

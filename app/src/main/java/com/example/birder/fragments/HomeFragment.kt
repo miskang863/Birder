@@ -27,11 +27,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        val button: Button = view.findViewById(R.id.testBtn)
-
-        button.setOnClickListener {
-
-        }
 
         return view
     }

@@ -5,8 +5,7 @@
     android:id="@+id/singleBirdLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SingleBirdFragment"
-    >
+    tools:context=".fragments.SingleBirdFragment">
 
     <ImageView
         android:id="@+id/singleImageView"
