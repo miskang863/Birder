@@ -14,5 +14,6 @@ data class Bird(
     var description: String,
     var imageUri: String,
     val longitude: Double,
-    val latitude: Double
+    val latitude: Double,
+    val time: String
 )

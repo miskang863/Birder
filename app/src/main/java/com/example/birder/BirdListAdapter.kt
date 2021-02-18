@@ -26,6 +26,7 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
         val bird = birdList[position]
         holder.itemName.text = bird.name
         holder.itemDesc.text = bird.description
+        holder.itemTime.text = bird.time
 
         Log.d("testi", "${bird.name} filepath: ${bird.imageUri}")
         holder.imageThumbnail.setImageURI(Uri.parse(bird.imageUri))
@@ -56,6 +57,7 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
         View.OnClickListener {
         val itemName: TextView = itemView.findViewById(R.id.itemName)
         val itemDesc: TextView = itemView.findViewById(R.id.itemDesc)
+        val itemTime: TextView = itemView.findViewById(R.id.itemTime)
         val imageThumbnail: ImageView = itemView.findViewById(R.id.imageThumbnail)
 
         init {

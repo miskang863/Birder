@@ -32,6 +32,8 @@ import com.example.birder.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 private const val FILE_NAME = "photo.jpg"
@@ -146,6 +148,10 @@ class NewFavoritesFragment : Fragment() {
     private fun insertDataToDatabase() {
         var name = editText1.text.toString()
         var desc = editText2.text.toString()
+        val time = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+        val formattedTime = time.format(formatter)
+        Log.d("testi", formattedTime)
 
         val bird =
             mLocation?.let {
@@ -155,7 +161,8 @@ class NewFavoritesFragment : Fragment() {
                     desc,
                     imageUri.toString(),
                     it.longitude,
-                    mLocation!!.latitude
+                    mLocation!!.latitude,
+                    formattedTime
                 )
             }
 

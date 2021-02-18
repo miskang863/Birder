@@ -138,7 +138,7 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
         val description = editTextDesc.text.toString()
 
         val updateBird =
-            Bird(bird.id, name, description, bird.imageUri, bird.longitude, bird.latitude)
+            Bird(bird.id, name, description, bird.imageUri, bird.longitude, bird.latitude, bird.time)
 
         if (bird != null) {
             mBirdViewModel.updateBird(updateBird)
