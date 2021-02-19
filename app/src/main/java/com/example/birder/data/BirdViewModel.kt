@@ -1,9 +1,12 @@
-package com.example.birder
+package com.example.birder.data
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.birder.data.Bird
+import com.example.birder.data.BirdDatabase
+import com.example.birder.data.BirdRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

@@ -13,8 +13,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.birder.R
-import com.example.birder.WikiApi
-import com.example.birder.imageApi.BirdImageJson
+import com.example.birder.wikiapi.WikiApi
+import com.example.birder.wikiJson.BirdImageJson
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

@@ -18,8 +18,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.birder.Bird
-import com.example.birder.BirdViewModel
+import com.example.birder.data.Bird
+import com.example.birder.data.BirdViewModel
 import com.example.birder.R
 import java.io.File
 

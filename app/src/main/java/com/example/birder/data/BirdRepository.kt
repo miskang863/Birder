@@ -1,6 +1,8 @@
-package com.example.birder
+package com.example.birder.data
 
 import androidx.lifecycle.LiveData
+import com.example.birder.data.Bird
+import com.example.birder.data.BirdDao
 
 class BirdRepository(private val birdDao: BirdDao) {
 

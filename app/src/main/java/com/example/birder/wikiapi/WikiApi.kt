@@ -1,6 +1,6 @@
-package com.example.birder
+package com.example.birder.wikiapi
 
-import com.example.birder.imageApi.BirdImageJson
+import com.example.birder.wikiJson.BirdImageJson
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET

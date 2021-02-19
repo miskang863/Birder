@@ -1,4 +1,4 @@
-package com.example.birder
+package com.example.birder.adapters
 
 import android.net.Uri
 import android.util.Log
@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.birder.R
+import com.example.birder.data.Bird
 import com.example.birder.fragments.SingleBirdFragment
 
 

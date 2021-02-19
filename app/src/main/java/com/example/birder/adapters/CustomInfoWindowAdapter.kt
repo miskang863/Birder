@@ -1,4 +1,4 @@
-package com.example.birder
+package com.example.birder.adapters
 
 import android.content.Context
 import android.net.Uri
@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.birder.R
+import com.example.birder.data.Bird
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 

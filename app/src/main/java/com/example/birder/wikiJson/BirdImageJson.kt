@@ -1,4 +1,4 @@
-package com.example.birder.imageApi
+package com.example.birder.wikiJson
 
 data class BirdImageJson(
     val batchcomplete: Boolean,

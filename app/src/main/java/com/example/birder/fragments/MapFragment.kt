@@ -11,9 +11,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.birder.Bird
-import com.example.birder.BirdViewModel
-import com.example.birder.CustomInfoWindowAdapter
+import com.example.birder.data.Bird
+import com.example.birder.data.BirdViewModel
+import com.example.birder.adapters.CustomInfoWindowAdapter
 import com.example.birder.R
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory

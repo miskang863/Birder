@@ -28,8 +28,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
-import com.example.birder.Bird
-import com.example.birder.BirdViewModel
+import com.example.birder.data.Bird
+import com.example.birder.data.BirdViewModel
 import com.example.birder.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices

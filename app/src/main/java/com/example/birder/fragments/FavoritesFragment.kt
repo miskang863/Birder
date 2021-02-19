@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.birder.BirdListAdapter
-import com.example.birder.BirdViewModel
+import com.example.birder.adapters.BirdListAdapter
+import com.example.birder.data.BirdViewModel
 import com.example.birder.R
 
 class FavoritesFragment : Fragment() {

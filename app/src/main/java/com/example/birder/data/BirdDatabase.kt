@@ -1,4 +1,4 @@
-package com.example.birder
+package com.example.birder.data
 
 import android.content.Context
 import androidx.room.Database
