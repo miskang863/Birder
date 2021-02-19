@@ -1,7 +1,6 @@
 package com.example.birder
 
 import android.content.Context
-import android.media.Image
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,7 +12,7 @@ import com.google.android.gms.maps.model.Marker
 
 class CustomInfoWindowAdapter(
     context: Context,
-    val birdMap: MutableMap<String, String> = mutableMapOf<String, String>()
+    private val birdMap: MutableMap<String, String> = mutableMapOf()
 ) : GoogleMap.InfoWindowAdapter {
 
     lateinit var bird: Bird

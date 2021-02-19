@@ -1,14 +1,20 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp">
 
     <RelativeLayout
+        android:id="@+id/rowLayout"
         android:layout_width="match_parent"
-        android:layout_height="121dp"
-        android:id="@+id/rowLayout">
+        android:layout_height="121dp">
+
+        <ImageView
+            android:id="@+id/imageThumbnail"
+            android:layout_width="103dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/birdImage"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/itemName"
@@ -20,7 +26,6 @@
             android:layout_marginTop="0dp"
             android:textSize="18sp"
             android:textStyle="bold" />
-
 
         <TextView
             android:id="@+id/itemTime"
@@ -42,11 +47,6 @@
             android:layout_marginTop="11dp"
             android:textSize="18sp" />
 
-        <ImageView
-            android:id="@+id/imageThumbnail"
-            android:layout_width="103dp"
-            android:layout_height="match_parent"
-            tools:srcCompat="@tools:sample/avatars" />
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

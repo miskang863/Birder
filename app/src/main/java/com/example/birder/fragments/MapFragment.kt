@@ -4,17 +4,13 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.birder.Bird
 import com.example.birder.BirdViewModel
 import com.example.birder.CustomInfoWindowAdapter
@@ -32,11 +28,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     private lateinit var map: GoogleMap
-    private val LOCATION_PERMISSION_REQUEST = 99
+    private val locationPermissionRequest = 99
     private lateinit var mBirdViewModel: BirdViewModel
     private var birdList = emptyList<Bird>()
     private var firstLoad = true
-    lateinit var infoAdapter: CustomInfoWindowAdapter
+    private lateinit var infoAdapter: CustomInfoWindowAdapter
     private val birdUriMarkerMap = mutableMapOf<String, String>()
 
 
@@ -61,7 +57,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 ActivityCompat.requestPermissions(
                     it,
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_PERMISSION_REQUEST
+                    locationPermissionRequest
                 )
             }
     }
@@ -71,7 +67,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         permissions: Array<String>,
         grantResults: IntArray
     ) {
-        if (requestCode == LOCATION_PERMISSION_REQUEST) {
+        if (requestCode == locationPermissionRequest) {
             if (grantResults.contains(PackageManager.PERMISSION_GRANTED)) {
                 getLocationAccess()
             }
@@ -87,29 +83,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         val supportFragmentManager = childFragmentManager
 
-        val mapFragment = supportFragmentManager?.findFragmentById(R.id.myMap) as SupportMapFragment
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.myMap) as SupportMapFragment
         mapFragment.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(v.context)
 
         //Get birds from DB
         mBirdViewModel = ViewModelProvider(this).get(BirdViewModel::class.java)
-        mBirdViewModel.readAllData.observe(viewLifecycleOwner, Observer { bird ->
+        mBirdViewModel.readAllData.observe(viewLifecycleOwner, { bird ->
             run {
                 birdList = bird
 
                 for ((x, n) in birdList.withIndex()) {
                     birdUriMarkerMap["m$x"] = n.imageUri
                 }
-                Log.d("testi", birdUriMarkerMap.toString())
             }
         })
-
-
         return v
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -132,6 +121,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 if (locationResult.locations.isNotEmpty()) {
                     val location = locationResult.lastLocation
                     if (location != null) {
+                        //Change marker icon and content
                         birdList.forEach {
                             val latLng = LatLng(it.latitude, it.longitude)
                             val markerOptions = MarkerOptions().position(latLng)
@@ -141,7 +131,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                                             "Y: ${"%.4f".format(latLng.latitude)} X: ${
                                                 "%.4f".format(latLng.longitude)
                                             }\n" +
-                                            "${getAddress(latLng.latitude, latLng.longitude)}"
+                                            getAddress(latLng.latitude, latLng.longitude)
 
                                     //.icon (A bitmap that's displayed in place of the default marker image.)
                                 )

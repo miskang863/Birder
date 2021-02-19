@@ -5,6 +5,19 @@
     <string name="Search">Search</string>
     <string name="SearchInfo">Search birds from wikipedia</string>
     <string name="bird_specie">Bird Species</string>
-    <string name="description">Description:</string>
+    <string name="birdItem">Bird</string>
+    <string name="birdImage">Picture of a bird</string>
+    <string name="gallery">Gallery</string>
+    <string name="galleryButton">Gallery button</string>
+    <string name="camera">Camera</string>
+    <string name="cameraButton">Camera button</string>
+    <string name="name">Name</string>
+    <string name="editName">Edit name</string>
+    <string name="description">Description</string>
+    <string name="save">Save</string>
+    <string name="searchText">Search birds from Wikipedia</string>
+    <string name="fabAddBird">Add a new bird</string>
+    <string name="map">Map</string>
+    <string name="update">Update</string>
 
 </resources>

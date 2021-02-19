@@ -1,8 +1,5 @@
 package com.example.birder
 
-import android.graphics.Bitmap
-import android.net.Uri
-import android.widget.ImageView
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 

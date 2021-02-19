@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -20,6 +21,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -41,23 +43,23 @@ private lateinit var photoFile: File
 private const val REQUEST_CODE = 42
 
 
-class NewFavoritesFragment : Fragment() {
+class AddFavoritesFragment : Fragment() {
     private lateinit var mBirdViewModel: BirdViewModel
-    private val gallery_image_code = 100
+    private val galleryImageCode = 100
     private var imageUri: Uri? = null
-    lateinit var imageView: ImageView
-    lateinit var editText1: EditText
-    lateinit var editText2: EditText
+    private lateinit var imageView: ImageView
+    private lateinit var editText1: EditText
+    private lateinit var editText2: EditText
 
     private val requestPermissionCode = 1
-    var mLocation: Location? = null
+    private var mLocation: Location? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_newfavorites, container, false)
+        val view = inflater.inflate(R.layout.fragment_addfavorites, container, false)
 
         mBirdViewModel = ViewModelProvider(this).get(BirdViewModel::class.java)
         editText1 = view.findViewById(R.id.editName)
@@ -97,7 +99,7 @@ class NewFavoritesFragment : Fragment() {
             )
 
             val gallery = Intent(ACTION_OPEN_DOCUMENT, fileProvider)
-            startActivityForResult(gallery, gallery_image_code)
+            startActivityForResult(gallery, galleryImageCode)
 
         }
 
@@ -130,7 +132,7 @@ class NewFavoritesFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         //Handle gallery image
-        if (resultCode == RESULT_OK && requestCode == gallery_image_code) {
+        if (resultCode == RESULT_OK && requestCode == galleryImageCode) {
             imageUri = data?.data
             imageUri?.let {
                 data?.flags?.and(
@@ -154,9 +156,10 @@ class NewFavoritesFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun insertDataToDatabase() {
-        var name = editText1.text.toString()
-        var desc = editText2.text.toString()
+        val name = editText1.text.toString()
+        val desc = editText2.text.toString()
         val time = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
         val formattedTime = time.format(formatter)

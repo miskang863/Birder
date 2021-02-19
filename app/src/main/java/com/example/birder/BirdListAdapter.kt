@@ -1,6 +1,5 @@
 package com.example.birder
 
-import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -64,13 +63,10 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
             itemView.setOnClickListener(this)
         }
 
-        override fun onClick(v: View?, ) {
+        override fun onClick(v: View?) {
         }
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(position: Int)
-    }
 
     fun setData(bird: List<Bird>) {
         this.birdList = bird

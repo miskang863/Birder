@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 object WikiApi {
-    val BASE_URL = "https://en.wikipedia.org/w/"
+    private const val BASE_URL = "https://en.wikipedia.org/w/"
 
     interface Service {
         @GET("api.php")
@@ -27,6 +27,6 @@ object WikiApi {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val service = retrofit.create(Service::class.java)
+    val service: Service = retrofit.create(Service::class.java)
 
 }

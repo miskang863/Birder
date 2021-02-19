@@ -9,16 +9,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
-import androidx.lifecycle.ViewModel
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.birder.Bird
 import com.example.birder.BirdViewModel
@@ -53,8 +51,8 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
 
         mBirdViewModel = ViewModelProvider(this).get(BirdViewModel::class.java)
 
-        editTextName = view.findViewById<EditText>(R.id.singleEditName)
-        editTextDesc = view.findViewById<EditText>(R.id.singleEditDesc)
+        editTextName = view.findViewById(R.id.singleEditName)
+        editTextDesc = view.findViewById(R.id.singleEditDesc)
         imageView = view.findViewById(R.id.singleImageView)
         cameraButton = view.findViewById(R.id.singleCameraButton)
         galleryButton = view.findViewById(R.id.singleGalleryButton)
@@ -138,7 +136,15 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
         val description = editTextDesc.text.toString()
 
         val updateBird =
-            Bird(bird.id, name, description, bird.imageUri, bird.longitude, bird.latitude, bird.time)
+            Bird(
+                bird.id,
+                name,
+                description,
+                bird.imageUri,
+                bird.longitude,
+                bird.latitude,
+                bird.time
+            )
 
         if (bird != null) {
             mBirdViewModel.updateBird(updateBird)
@@ -188,12 +194,12 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
                 commit()
             }
         }
-            builder.setNegativeButton("No") { _, _ ->
+        builder.setNegativeButton("No") { _, _ ->
 
-            }
-            builder.setTitle("Delete ${bird.name}?")
-            builder.setMessage("Are you sure you want to delete ${bird.name}?")
-            builder.create().show()
         }
-
+        builder.setTitle("Delete ${bird.name}?")
+        builder.setMessage("Are you sure you want to delete ${bird.name}?")
+        builder.create().show()
     }
+
+}

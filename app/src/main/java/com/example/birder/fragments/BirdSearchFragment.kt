@@ -4,17 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import android.widget.TextView.OnEditorActionListener
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.example.birder.R
 import com.example.birder.WikiApi
@@ -27,15 +23,12 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 
-const val BASE_URL = "https://en.wikipedia.org/w/"
-
 class BirdSearchFragment : Fragment() {
 
-    private var TAG = "BirdSearch"
-    lateinit var birdNameTextView: TextView
-    lateinit var birdDescriptionTextView: TextView
-    lateinit var searchImageView: ImageView
-    lateinit var searchImageButton: ImageButton
+    private lateinit var birdNameTextView: TextView
+    private lateinit var birdDescriptionTextView: TextView
+    private lateinit var searchImageView: ImageView
+    private lateinit var searchImageButton: ImageButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,10 +70,10 @@ class BirdSearchFragment : Fragment() {
     private fun getBirdData(birdSpecies: String) {
 
         if (view != null) {
-            birdNameTextView = view!!.findViewById<TextView>(R.id.birdNameTextView)
-            birdDescriptionTextView = view!!.findViewById<TextView>(R.id.birdDescriptionTextView)
-            searchImageView = view!!.findViewById<ImageView>(R.id.searchImageView)
-            searchImageButton = view!!.findViewById<ImageButton>(R.id.searchImageButton)
+            birdNameTextView = view!!.findViewById(R.id.birdNameTextView)
+            birdDescriptionTextView = view!!.findViewById(R.id.birdDescriptionTextView)
+            searchImageView = view!!.findViewById(R.id.searchImageView)
+            searchImageButton = view!!.findViewById(R.id.searchImageButton)
         }
 
         //API calls
@@ -98,7 +91,7 @@ class BirdSearchFragment : Fragment() {
             var birdDescText = response?.query?.pages?.get(0)?.terms?.description.toString()
             birdDescText = birdDescText.replace("[", "").replace("]", "").capitalize(Locale.ROOT)
 
-            if(birdDescText == "Null"){
+            if (birdDescText == "Null") {
                 birdDescText = "Description not found"
             }
             //Handle the UI
@@ -124,7 +117,7 @@ class BirdSearchFragment : Fragment() {
     }
 
     private fun hideKeyboard(view: View) {
-        view?.apply {
+        view.apply {
             val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }

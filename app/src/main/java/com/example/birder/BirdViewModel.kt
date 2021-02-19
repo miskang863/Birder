@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class BirdViewModel(application: Application): AndroidViewModel(application) {
+class BirdViewModel(application: Application) : AndroidViewModel(application) {
 
     val readAllData: LiveData<List<Bird>>
     private val repository: BirdRepository
@@ -15,23 +15,23 @@ class BirdViewModel(application: Application): AndroidViewModel(application) {
     init {
         val birdDao = BirdDatabase.getDatabase(application).birdDao()
         repository = BirdRepository(birdDao)
-        readAllData =  repository.readAllData
+        readAllData = repository.readAllData
     }
 
-    fun addBird(bird: Bird){
+    fun addBird(bird: Bird) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.addBird(bird)
         }
     }
 
-    fun updateBird(bird: Bird){
-        viewModelScope.launch(Dispatchers.IO){
+    fun updateBird(bird: Bird) {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.updateBird(bird)
         }
     }
 
-    fun deleteBird(bird: Bird){
-        viewModelScope.launch(Dispatchers.IO){
+    fun deleteBird(bird: Bird) {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.deleteBird(bird)
         }
     }

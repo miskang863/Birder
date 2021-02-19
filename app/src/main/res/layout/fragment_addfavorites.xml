@@ -5,13 +5,14 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.NewFavoritesFragment">
+    tools:context=".fragments.AddFavoritesFragment">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="197dp"
         android:layout_height="207dp"
         android:layout_marginTop="32dp"
+        android:contentDescription="@string/birdImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,23 +24,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginTop="32dp"
-        android:text="Gallery"
+        android:contentDescription="@string/galleryButton"
+        android:text="@string/gallery"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
-        android:id="@+id/btn_save"
+        android:id="@+id/cameraButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="165dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="64dp"
-        android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editDesc" />
+        android:layout_marginStart="32dp"
+        android:contentDescription="@string/cameraButton"
+        android:text="@string/camera"
+        app:layout_constraintStart_toEndOf="@+id/galleryButton"
+        app:layout_constraintTop_toTopOf="@+id/galleryButton" />
 
     <EditText
         android:id="@+id/editName"
@@ -47,7 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
         android:layout_marginTop="32dp"
-        android:hint="Name"
+        android:autofillHints=""
+        android:hint="@string/name"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,19 +58,26 @@
         android:layout_height="63dp"
         android:layout_marginStart="56dp"
         android:layout_marginTop="32dp"
-        android:hint="Description"
+        android:hint="@string/description"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editName" />
 
     <Button
-        android:id="@+id/cameraButton"
+        android:id="@+id/btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="Camera"
-        app:layout_constraintStart_toEndOf="@+id/galleryButton"
-        app:layout_constraintTop_toTopOf="@+id/galleryButton" />
+        android:layout_marginStart="165dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="64dp"
+        android:contentDescription="@string/save"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editDesc" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
