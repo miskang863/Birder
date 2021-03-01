@@ -1,9 +1,9 @@
 package com.example.birder.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,12 +11,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.birder.adapters.BirdListAdapter
 import com.example.birder.data.BirdViewModel
 import com.example.birder.R
+import com.example.birder.databinding.ActivityMainBinding
 
-class FavoritesFragment : Fragment() {
+class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
+
+    private lateinit var binding: ActivityMainBinding
 
     private lateinit var mBirdViewModel: BirdViewModel
 
     private lateinit var recyclerView: RecyclerView
+
+    private val adapter = BirdListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,8 +29,8 @@ class FavoritesFragment : Fragment() {
     ): View? {
 
         val v = inflater.inflate(R.layout.fragment_favorites, container, false)
+        setHasOptionsMenu(true)
 
-        val adapter = BirdListAdapter()
         recyclerView = v.findViewById(R.id.recyclerView)
         //  recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
@@ -49,4 +54,39 @@ class FavoritesFragment : Fragment() {
         container?.removeAllViews()
         return v
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_menu, menu)
+
+        val search = menu?.findItem(R.id.menu_search)
+        val searchView = search?.actionView as? SearchView
+        searchView?.isSubmitButtonEnabled = true
+        searchView?.setOnQueryTextListener(this)
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        if (query != null) {
+            searchDatabase(query)
+        }
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        if (newText != null) {
+            searchDatabase(newText)
+        }
+        return true
+    }
+
+    private fun searchDatabase(query: String) {
+        val searchQuery = "%$query%"
+
+        mBirdViewModel.searchDatabase(searchQuery).observe(this, { list ->
+            list.let {
+                Log.d("testi", it.toString())
+                adapter.setData(it)
+            }
+        })
+    }
+
 }

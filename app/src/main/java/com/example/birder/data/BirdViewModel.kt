@@ -3,6 +3,7 @@ package com.example.birder.data
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.birder.data.Bird
 import com.example.birder.data.BirdDatabase
@@ -37,5 +38,9 @@ class BirdViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteBird(bird)
         }
+    }
+
+    fun searchDatabase(searchQuery: String): LiveData<List<Bird>> {
+        return repository.searchDatabase(searchQuery).asLiveData()
     }
 }

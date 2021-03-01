@@ -2,6 +2,7 @@ package com.example.birder.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BirdDao {
@@ -17,4 +18,7 @@ interface BirdDao {
 
     @Delete
     suspend fun deleteBird(bird: Bird)
+
+    @Query("SELECT * FROM bird_table WHERE name LIKE :searchQuery")
+    fun searchDatabase(searchQuery: String): Flow<List<Bird>>
 }

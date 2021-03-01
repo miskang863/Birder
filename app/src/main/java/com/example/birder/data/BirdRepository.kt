@@ -3,6 +3,7 @@ package com.example.birder.data
 import androidx.lifecycle.LiveData
 import com.example.birder.data.Bird
 import com.example.birder.data.BirdDao
+import kotlinx.coroutines.flow.Flow
 
 class BirdRepository(private val birdDao: BirdDao) {
 
@@ -19,4 +20,9 @@ class BirdRepository(private val birdDao: BirdDao) {
     suspend fun deleteBird(bird: Bird) {
         birdDao.deleteBird(bird)
     }
+
+    fun searchDatabase(searchQuery: String): Flow<List<Bird>> {
+        return birdDao.searchDatabase(searchQuery)
+    }
+
 }
