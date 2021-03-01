@@ -83,7 +83,6 @@ class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
 
         mBirdViewModel.searchDatabase(searchQuery).observe(this, { list ->
             list.let {
-                Log.d("testi", it.toString())
                 adapter.setData(it)
             }
         })
