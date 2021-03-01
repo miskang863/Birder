@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.util.*
 
 class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -37,8 +39,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
 
     private fun getAddress(lat: Double?, lng: Double?): String {
-        val geocoder = Geocoder(activity)
-        val list = geocoder.getFromLocation(lat ?: 0.0, lng ?: 0.0, 1)
+        val geoCoder = Geocoder(activity, Locale.getDefault())
+        val list = geoCoder.getFromLocation(lat ?: 0.0, lng ?: 0.0, 1)
         return list[0].getAddressLine(0)
     }
 
@@ -101,6 +103,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         return v
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+
+
+
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         map.uiSettings.isZoomControlsEnabled = true
@@ -124,6 +133,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                         //Change marker icon and content
                         birdList.forEach {
                             val latLng = LatLng(it.latitude, it.longitude)
+                            Log.d("testi", latLng.toString())
                             val markerOptions = MarkerOptions().position(latLng)
                                 .title(it.name)
                                 .snippet(
@@ -132,7 +142,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                                                 "%.4f".format(latLng.longitude)
                                             }\n" +
                                             getAddress(latLng.latitude, latLng.longitude)
-
                                     //.icon (A bitmap that's displayed in place of the default marker image.)
                                 )
                             map.addMarker(markerOptions)
