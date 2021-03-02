@@ -6,8 +6,11 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import com.example.birder.R
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.assets.RenderableSource
@@ -15,7 +18,7 @@ import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.TransformableNode
 
-class ARFragment: AppCompatActivity(), View.OnClickListener {
+class ARCameraFragment: Fragment(), View.OnClickListener {
     lateinit var arrayView: Array<View>
 
     private lateinit var duck: ImageView
@@ -24,21 +27,27 @@ class ARFragment: AppCompatActivity(), View.OnClickListener {
 
     private lateinit var arFrag: ArFragment
 
-    var duckRenderable:ModelRenderable? = null
+    private var duckRenderable:ModelRenderable? = null
 
 
-    internal var selected = 1
+    private var selected = 1
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val v = inflater.inflate(R.layout.fragment_ar_camera, container, false)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val supportFragmentManager = childFragmentManager
+
         arFrag = supportFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment
-        duckSound = MediaPlayer.create(this, R.raw.duck)
+        duckSound = MediaPlayer.create(activity, R.raw.duck)
 
+        duck = v.findViewById(R.id.duck)
         setArray()
         setClickListener()
         setModel()
+
 
 
         arFrag.setOnTapArPlaneListener { hitResult, plane, motionEvent ->
@@ -47,6 +56,8 @@ class ARFragment: AppCompatActivity(), View.OnClickListener {
             anchorNode.setParent(arFrag.arSceneView.scene)
             createModel(anchorNode,selected)
         }
+
+        return v
     }
 
     private fun createModel(anchorNode: AnchorNode, selected: Int) {
@@ -73,9 +84,9 @@ class ARFragment: AppCompatActivity(), View.OnClickListener {
 
         ModelRenderable.builder()
             .setSource(
-                this,
-                RenderableSource.builder().setSource(this, duckUri, RenderableSource.SourceType.GLTF2)
-                    .setScale(0.3f)
+                activity,
+                RenderableSource.builder().setSource(activity, duckUri, RenderableSource.SourceType.GLTF2)
+                    .setScale(0.15f)
                     .setRecenterMode(RenderableSource.RecenterMode.ROOT)
                     .build()
             ).setRegistryId("duck").build()
@@ -87,8 +98,6 @@ class ARFragment: AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setArray(){
-        duck = findViewById(R.id.duck)
-
         arrayView = arrayOf(
             duck,
         )
@@ -108,7 +117,7 @@ class ARFragment: AppCompatActivity(), View.OnClickListener {
         }
         }  else*/ if(v!!.id == R.id.duck){
             selected = 3
-            mySetBackground(v!!.id)
+            mySetBackground(v.id)
         }
     }
 

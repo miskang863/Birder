@@ -11,11 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.birder.adapters.BirdListAdapter
 import com.example.birder.data.BirdViewModel
 import com.example.birder.R
-import com.example.birder.databinding.ActivityMainBinding
 
 class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
-
-    private lateinit var binding: ActivityMainBinding
 
     private lateinit var mBirdViewModel: BirdViewModel
 
