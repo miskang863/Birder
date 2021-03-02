@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ARFragment">
+    tools:context=".fragments.ARCameraFragment">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/sceneform_fragment"
         android:name="com.google.ar.sceneform.ux.ArFragment"
         android:layout_width="match_parent"
@@ -24,7 +24,8 @@
                 android:id="@+id/duck"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/duck" />
+                android:src="@drawable/duck"
+                android:contentDescription="TODO" />
 
         </LinearLayout>
     </HorizontalScrollView>

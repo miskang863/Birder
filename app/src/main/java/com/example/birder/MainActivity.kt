@@ -5,9 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.example.birder.fragments.BirdSearchFragment
-import com.example.birder.fragments.FavoritesFragment
-import com.example.birder.fragments.MapFragment
+import com.example.birder.fragments.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         val favoritesFragment = FavoritesFragment()
         val mapFragment = MapFragment()
         val birdSearchFragment = BirdSearchFragment()
+        val arFragment = ARCameraFragment()
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         makeCurrentFragment(favoritesFragment)
 
@@ -48,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.ic_favorite -> makeCurrentFragment(favoritesFragment)
                 R.id.ic_map -> makeCurrentFragment(mapFragment)
                 R.id.ic_search -> makeCurrentFragment(birdSearchFragment)
+                R.id.ic_ar -> makeCurrentFragment(arFragment)
             }
             true
         }
