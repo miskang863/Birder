@@ -28,16 +28,10 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
         holder.itemName.text = bird.name
         holder.itemDesc.text = bird.description
         holder.itemTime.text = bird.time
-
-        Log.d("testi", "${bird.name} filepath: ${bird.imageUri}")
         holder.imageThumbnail.setImageURI(Uri.parse(bird.imageUri))
 
         holder.itemView.setOnClickListener {
-            Log.d("testi", "${bird.name} CLICKEDD")
-
-
             val manager = (holder.itemView.context as FragmentActivity).supportFragmentManager
-
             val singleBirdFragment = SingleBirdFragment(bird)
 
             manager.beginTransaction().apply {
@@ -45,7 +39,6 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
                 addToBackStack(null)
                 commit()
             }
-
         }
     }
 
@@ -68,7 +61,6 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
         override fun onClick(v: View?) {
         }
     }
-
 
     fun setData(bird: List<Bird>) {
         this.birdList = bird

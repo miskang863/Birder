@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.birder.R
 import com.example.birder.adapters.BirdListAdapter
 import com.example.birder.data.BirdViewModel
-import com.example.birder.R
 
 class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
 
@@ -28,6 +28,8 @@ class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
         val v = inflater.inflate(R.layout.fragment_favorites, container, false)
         setHasOptionsMenu(true)
 
+        Log.d("testi", "NYT ON FAVEIS")
+
         recyclerView = v.findViewById(R.id.recyclerView)
         //  recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
@@ -38,13 +40,13 @@ class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
             adapter.setData(bird)
         })
 
-
         val fab: View = v.findViewById(R.id.addFromFile)
         fab.setOnClickListener {
             val addFavoritesFragment = AddFavoritesFragment()
             val supportFragmentManager = childFragmentManager
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.favoritelayout, addFavoritesFragment)
+                addToBackStack(null)
                 commit()
             }
         }
@@ -53,6 +55,7 @@ class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
         inflater.inflate(R.menu.search_menu, menu)
 
         val search = menu?.findItem(R.id.menu_search)

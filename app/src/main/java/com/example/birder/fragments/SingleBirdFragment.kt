@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
@@ -19,9 +18,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.birder.R
 import com.example.birder.data.Bird
 import com.example.birder.data.BirdViewModel
-import com.example.birder.R
 import java.io.File
 
 lateinit var imageView: ImageView
@@ -93,6 +92,13 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
 
         updateButton.setOnClickListener {
             updateBird()
+
+            val favoritesFragment = FavoritesFragment()
+            val supportFragmentManager = childFragmentManager
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.singleBirdLayout, favoritesFragment)
+                commit()
+            }
         }
 
         setHasOptionsMenu(true)
@@ -101,6 +107,9 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
 
         return view
     }
+
+
+
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -172,6 +181,7 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
         inflater.inflate(R.menu.delete_menu, menu)
     }
 

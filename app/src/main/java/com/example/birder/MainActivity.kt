@@ -2,6 +2,7 @@ package com.example.birder
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import com.example.birder.fragments.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         val mapFragment = MapFragment()
         val birdSearchFragment = BirdSearchFragment()
         val arFragment = ARCameraFragment()
+
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         makeCurrentFragment(favoritesFragment)
 
@@ -51,7 +54,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
     }
 
     private fun makeCurrentFragment(fragment: Fragment) {
@@ -61,5 +63,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
+    override fun onBackPressed() {
+        val fragments = supportFragmentManager.backStackEntryCount
+        Log.d("testi", "fragments count: $fragments")
+        if (fragments == 1) {
+            // make layout invisible since last fragment will be removed
+        }
+        super.onBackPressed()
+    }
 }
