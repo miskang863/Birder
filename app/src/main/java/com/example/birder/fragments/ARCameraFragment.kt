@@ -21,19 +21,19 @@ class ARCameraFragment : Fragment(), View.OnClickListener {
     lateinit var arrayView: Array<View>
 
     private lateinit var duck: ImageView
-    private lateinit var eagle: ImageView
+    private lateinit var crow: ImageView
     private lateinit var yellow: ImageView
 
 
     private lateinit var duckSound: MediaPlayer
-    private lateinit var eagleSound: MediaPlayer
+    private lateinit var crowSound: MediaPlayer
     private lateinit var yellowSound: MediaPlayer
 
 
     private lateinit var arFrag: ArFragment
 
     private var duckRenderable: ModelRenderable? = null
-    private var eagleRenderable: ModelRenderable? = null
+    private var crowRenderable: ModelRenderable? = null
     private var yellowRenderable: ModelRenderable? = null
 
 
@@ -48,13 +48,14 @@ class ARCameraFragment : Fragment(), View.OnClickListener {
         val supportFragmentManager = childFragmentManager
 
         arFrag = supportFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment
+
         duckSound = MediaPlayer.create(activity, R.raw.duck)
-        eagleSound = MediaPlayer.create(activity, R.raw.eagle)
-        yellowSound = MediaPlayer.create(activity, R.raw.yelllowbird)
+        crowSound = MediaPlayer.create(activity, R.raw.crow)
+        yellowSound = MediaPlayer.create(activity, R.raw.yellowbird)
 
 
         duck = v.findViewById(R.id.duck)
-        eagle = v.findViewById(R.id.eagle)
+        crow = v.findViewById(R.id.crow)
         yellow = v.findViewById(R.id.yellow)
 
         setArray()
@@ -74,47 +75,40 @@ class ARCameraFragment : Fragment(), View.OnClickListener {
     }
 
     private fun createModel(anchorNode: AnchorNode, selected: Int) {
-        /*
-        if(selected == 1){
-            val toymoped = TransformableNode(arFrag.transformationSystem)
-            toymoped.setParent(anchorNode)
-            toymoped.renderable = toyMopedRenderable
-            toymoped.setOnTapListener { _, _ ->
-                mopedSound.start()
+        when (selected) {
+            1 -> {
+                val duck = TransformableNode(arFrag.transformationSystem)
+                duck.setParent(anchorNode)
+                duck.renderable = duckRenderable
+                duck.setOnTapListener { _, _ ->
+                    duckSound.start()
+                }
+                duck.select()
             }
-            toymoped.select()
-        }
-        } else if (selected == 3){ */
-        if (selected == 1) {
-            val duck = TransformableNode(arFrag.transformationSystem)
-            duck.setParent(anchorNode)
-            duck.renderable = duckRenderable
-            duck.setOnTapListener { _, _ ->
-                duckSound.start()
+            2 -> {
+                val crow = TransformableNode(arFrag.transformationSystem)
+                crow.setParent(anchorNode)
+                crow.renderable = crowRenderable
+                crow.setOnTapListener { _, _ ->
+                    crowSound.start()
+                }
+                crow.select()
             }
-            duck.select()
-        } else if (selected == 2) {
-            val eagle = TransformableNode(arFrag.transformationSystem)
-            eagle.setParent(anchorNode)
-            eagle.renderable = eagleRenderable
-            eagle.setOnTapListener { _, _ ->
-                eagleSound.start()
+            3 -> {
+                val yellow = TransformableNode(arFrag.transformationSystem)
+                yellow.setParent(anchorNode)
+                yellow.renderable = yellowRenderable
+                yellow.setOnTapListener { _, _ ->
+                    yellowSound.start()
+                }
+                yellow.select()
             }
-            eagle.select()
-        } else if (selected == 3) {
-            val yellow = TransformableNode(arFrag.transformationSystem)
-            yellow.setParent(anchorNode)
-            yellow.renderable = yellowRenderable
-            yellow.setOnTapListener { _, _ ->
-                yellowSound.start()
-            }
-            yellow.select()
         }
     }
 
     private fun setModel() {
         val duckUri = Uri.parse("file:///android_asset/duck/duck.gltf")
-        val eagleUri = Uri.parse("file:///android_asset/eagle/eagle.gltf")
+        val crowUri = Uri.parse("file:///android_asset/crow/crow.gltf")
         val yellowUri = Uri.parse("file:///android_asset/yellowbird/yellowbird.gltf")
 
         //  val duckUri = Uri.parse("https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf")
@@ -138,12 +132,12 @@ class ARCameraFragment : Fragment(), View.OnClickListener {
             .setSource(
                 activity,
                 RenderableSource.builder()
-                    .setSource(activity, eagleUri, RenderableSource.SourceType.GLTF2)
-                    .setScale(20f)
+                    .setSource(activity, crowUri, RenderableSource.SourceType.GLTF2)
+                    .setScale(0.15f)
                     .setRecenterMode(RenderableSource.RecenterMode.ROOT)
                     .build()
-            ).setRegistryId("eagle").build()
-            .thenAccept { eagleRenderable = it }
+            ).setRegistryId("crow").build()
+            .thenAccept { crowRenderable = it }
             .exceptionally {
                 Log.e("YUP", "renderableFuture error: ${it.localizedMessage}")
                 null
@@ -169,7 +163,7 @@ class ARCameraFragment : Fragment(), View.OnClickListener {
     private fun setArray() {
         arrayView = arrayOf(
             duck,
-            eagle,
+            crow,
             yellow
         )
     }
@@ -186,7 +180,7 @@ class ARCameraFragment : Fragment(), View.OnClickListener {
                 selected = 1
                 mySetBackground(v.id)
             }
-            v.id == R.id.eagle -> {
+            v.id == R.id.crow -> {
                 selected = 2
                 mySetBackground(v.id)
             }
