@@ -22,12 +22,14 @@ class ARCameraFragment: Fragment(), View.OnClickListener {
     lateinit var arrayView: Array<View>
 
     private lateinit var duck: ImageView
+    private lateinit var crow: ImageView
 
     private lateinit var duckSound: MediaPlayer
 
     private lateinit var arFrag: ArFragment
 
     private var duckRenderable:ModelRenderable? = null
+    private var crowRenderable:ModelRenderable? = null
 
 
     private var selected = 1
@@ -44,6 +46,7 @@ class ARCameraFragment: Fragment(), View.OnClickListener {
         duckSound = MediaPlayer.create(activity, R.raw.duck)
 
         duck = v.findViewById(R.id.duck)
+        crow = v.findViewById(R.id.crow)
         setArray()
         setClickListener()
         setModel()
@@ -61,26 +64,30 @@ class ARCameraFragment: Fragment(), View.OnClickListener {
     }
 
     private fun createModel(anchorNode: AnchorNode, selected: Int) {
-        /*
-        if(selected == 1){
-            val toymoped = TransformableNode(arFrag.transformationSystem)
-            toymoped.setParent(anchorNode)
-            toymoped.renderable = toyMopedRenderable
-            toymoped.setOnTapListener { _, _ ->
-                mopedSound.start()
+
+        if (selected == 1) {
+            val crow = TransformableNode(arFrag.transformationSystem)
+            crow.setParent(anchorNode)
+            crow.renderable = crowRenderable
+            crow.setOnTapListener { _, _ ->
+                //   mopedSound.start()
             }
-            toymoped.select()
-        }
-        } else if (selected == 3){ */
+            crow.select()
+        } else if (selected == 2) {
             val duck = TransformableNode(arFrag.transformationSystem)
             duck.setParent(anchorNode)
             duck.renderable = duckRenderable
+            duck.setOnTapListener { _, _ ->
+                duckSound.start()
+            }
             duck.select()
+        }
     }
 
     private fun setModel() {
         val duckUri = Uri.parse("file:///android_asset/duck/duck.gltf")
       //  val duckUri = Uri.parse("https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf")
+        val crowUri = Uri.parse("file:///android_asset/crow/crow.gltf")
 
         ModelRenderable.builder()
             .setSource(
@@ -95,11 +102,26 @@ class ARCameraFragment: Fragment(), View.OnClickListener {
                 Log.e("YUP", "renderableFuture error: ${it.localizedMessage}")
                 null
             }
+
+        ModelRenderable.builder()
+            .setSource(
+                activity,
+                RenderableSource.builder().setSource(activity, crowUri, RenderableSource.SourceType.GLTF2)
+                    .setScale(0.15f)
+                    .setRecenterMode(RenderableSource.RecenterMode.ROOT)
+                    .build()
+            ).setRegistryId("crow").build()
+            .thenAccept { crowRenderable = it }
+            .exceptionally {
+                Log.e("YUP", "renderableFuture error: ${it.localizedMessage}")
+                null
+            }
     }
 
     private fun setArray(){
         arrayView = arrayOf(
-            duck,
+            crow,
+            duck
         )
     }
 
@@ -110,13 +132,13 @@ class ARCameraFragment: Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        /*
-        if(v!!.id == R.id.toymoped){
+
+        if(v!!.id == R.id.crow){
             selected = 1
             mySetBackground(v!!.id)
         }
-        }  else*/ if(v!!.id == R.id.duck){
-            selected = 3
+         else if(v!!.id == R.id.duck){
+            selected = 2
             mySetBackground(v.id)
         }
     }

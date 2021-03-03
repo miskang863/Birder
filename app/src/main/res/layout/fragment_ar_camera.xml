@@ -27,6 +27,13 @@
                 android:src="@drawable/duck"
                 android:contentDescription="TODO" />
 
+            <ImageView
+                android:id="@+id/crow"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/crow"
+                android:contentDescription="TODO" />
+
         </LinearLayout>
     </HorizontalScrollView>
 </FrameLayout>
