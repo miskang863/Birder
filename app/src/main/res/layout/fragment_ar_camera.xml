@@ -28,11 +28,20 @@
                 android:contentDescription="TODO" />
 
             <ImageView
-                android:id="@+id/crow"
+                android:id="@+id/eagle"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/crow"
+                android:src="@drawable/baldeagle"
                 android:contentDescription="TODO" />
+
+            <ImageView
+                android:id="@+id/yellow"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/yellowbird"
+                android:contentDescription="TODO" />
+
+
 
         </LinearLayout>
     </HorizontalScrollView>

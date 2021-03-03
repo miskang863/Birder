@@ -23,12 +23,13 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.lang.Exception
 import java.util.*
 
 class MapFragment : Fragment(), OnMapReadyCallback {
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationRequest: LocationRequest
-    private lateinit var locationCallback: LocationCallback
+    private var fusedLocationClient: FusedLocationProviderClient? = null
+    private var locationRequest: LocationRequest? = null
+    private var locationCallback: LocationCallback? = null
     private lateinit var map: GoogleMap
     private val locationPermissionRequest = 99
     private lateinit var mBirdViewModel: BirdViewModel
@@ -39,6 +40,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
 
     private fun getAddress(lat: Double?, lng: Double?): String {
+
         val geoCoder = Geocoder(activity, Locale.getDefault())
         val list = geoCoder.getFromLocation(lat ?: 0.0, lng ?: 0.0, 1)
         return list[0].getAddressLine(0)
@@ -81,8 +83,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_map, container, false)
-
-
         val supportFragmentManager = childFragmentManager
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.myMap) as SupportMapFragment
@@ -103,11 +103,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         return v
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
     }
 
+    private fun stopLocationUpdates() {
+        fusedLocationClient?.removeLocationUpdates(locationCallback)
+    }
 
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -120,10 +123,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun getLocationUpdates() {
+        if (locationRequest != null) {
+            return
+        }
         locationRequest = LocationRequest()
-        locationRequest.interval = 20000
-        locationRequest.fastestInterval = 15000
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest!!.interval = 10000
+        locationRequest!!.fastestInterval = 10000
+        locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
@@ -172,7 +178,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             PackageManager.PERMISSION_GRANTED) {
             return
         }
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+        fusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, null)
     }
 
 
