@@ -1,7 +1,6 @@
 package com.example.birder.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -58,7 +57,7 @@ class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
         menu.clear()
         inflater.inflate(R.menu.search_menu, menu)
 
-        val search = menu?.findItem(R.id.menu_search)
+        val search = menu.findItem(R.id.menu_search)
         val searchView = search?.actionView as? SearchView
         searchView?.isSubmitButtonEnabled = true
         searchView?.setOnQueryTextListener(this)

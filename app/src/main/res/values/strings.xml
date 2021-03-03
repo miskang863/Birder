@@ -19,5 +19,13 @@
     <string name="fabAddBird">Add a new bird</string>
     <string name="map">Map</string>
     <string name="update">Update</string>
+    <string name="duck">Duck model</string>
+    <string name="crow">Crow model</string>
+    <string name="yellowbird">Yellow bird model</string>
+    <string name="searchfromwiki">Search this bird from Wikipedia</string>
+    <string name="delete">Delete</string>
+    <string name="favorite">Favorite</string>
+    <string name="search">Search</string>
+    <string name="ar_camera">AR Camera</string>
 
 </resources>

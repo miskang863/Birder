@@ -18,7 +18,7 @@ import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.TransformableNode
 
 class ARCameraFragment : Fragment(), View.OnClickListener {
-    lateinit var arrayView: Array<View>
+    private lateinit var arrayView: Array<View>
 
     private lateinit var duck: ImageView
     private lateinit var crow: ImageView
@@ -64,7 +64,7 @@ class ARCameraFragment : Fragment(), View.OnClickListener {
 
 
 
-        arFrag.setOnTapArPlaneListener { hitResult, plane, motionEvent ->
+        arFrag.setOnTapArPlaneListener { hitResult, _, _ ->
             val anchor = hitResult.createAnchor()
             val anchorNode = AnchorNode(anchor)
             anchorNode.setParent(arFrag.arSceneView.scene)

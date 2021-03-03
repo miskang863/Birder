@@ -46,6 +46,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         return list[0].getAddressLine(0)
     }
 
+    //Checks for permission to use GPS
     private fun getLocationAccess() {
         if (activity?.let {
                 ContextCompat.checkSelfPermission(
@@ -134,28 +135,24 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 if (locationResult.locations.isNotEmpty()) {
-                    val location = locationResult.lastLocation
-                    if (location != null) {
-                        //Change marker icon and content
-                        birdList.forEach {
-                            val latLng = LatLng(it.latitude, it.longitude)
-                            Log.d("testi", latLng.toString())
-                            val markerOptions = MarkerOptions().position(latLng)
-                                .title(it.name)
-                                .snippet(
-                                    "${it.description}\n" +
-                                            "Y: ${"%.4f".format(latLng.latitude)} X: ${
-                                                "%.4f".format(latLng.longitude)
-                                            }\n" +
-                                            getAddress(latLng.latitude, latLng.longitude)
-                                    //.icon (A bitmap that's displayed in place of the default marker image.)
-                                )
-                            map.addMarker(markerOptions)
-
-                            if (firstLoad) {
-                                map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11f))
-                                firstLoad = false
-                            }
+                    // Gets the items from bird list and presents them on the map as markers with clickable details
+                    birdList.forEach {
+                        val latLng = LatLng(it.latitude, it.longitude)
+                        Log.d("testi", latLng.toString())
+                        val markerOptions = MarkerOptions().position(latLng)
+                            .title(it.name)
+                            .snippet(
+                                "${it.description}\n" +
+                                        "Y: ${"%.4f".format(latLng.latitude)} X: ${
+                                            "%.4f".format(latLng.longitude)
+                                        }\n" +
+                                        getAddress(latLng.latitude, latLng.longitude)
+                            )
+                        map.addMarker(markerOptions)
+                        // Zooms in when opening the map
+                        if (firstLoad) {
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11f))
+                            firstLoad = false
                         }
                     }
                 }
