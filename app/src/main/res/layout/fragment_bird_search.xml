@@ -44,7 +44,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/searchButton"
         app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="true" />
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/searchButton"

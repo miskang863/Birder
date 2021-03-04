@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.SingleBirdFragment"
-    android:background="#FFFFFF">
+    android:background="@color/primaryblue">
 
     <ImageView
         android:id="@+id/singleImageView"
@@ -38,7 +38,9 @@
         android:hint="@string/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/singleGalleryButton" />
+        app:layout_constraintTop_toBottomOf="@+id/singleGalleryButton"
+        android:autofillHints=""
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/singleEditDesc"
@@ -48,7 +50,9 @@
         android:hint="@string/description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/singleEditName" />
+        app:layout_constraintTop_toBottomOf="@+id/singleEditName"
+        android:autofillHints=""
+        android:inputType="text" />
 
     <Button
         android:id="@+id/singleCameraButton"
