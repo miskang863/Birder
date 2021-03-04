@@ -45,37 +45,37 @@
 
     <EditText
         android:id="@+id/editName"
-        android:layout_width="312dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="32dp"
         android:autofillHints=""
         android:hint="@string/name"
+        android:inputType="text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/galleryButton"
-        android:inputType="text" />
+        app:layout_constraintTop_toBottomOf="@+id/galleryButton" />
 
     <EditText
         android:id="@+id/editDesc"
-        android:layout_width="321dp"
-        android:layout_height="63dp"
-        android:layout_marginStart="56dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="32dp"
+        android:autofillHints=""
         android:hint="@string/description"
+        android:inputType="text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editName"
-        android:autofillHints="true"
-        android:inputType="text" />
+        app:layout_constraintTop_toBottomOf="@+id/editName" />
 
     <Button
         android:id="@+id/btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="165dp"
+        android:layout_marginStart="160dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="64dp"
         android:contentDescription="@string/save"

@@ -6,14 +6,16 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#ffffff</color>
 
     <color name="primaryblue">#bbdefb</color>
     <color name="primarylight">#eeffff</color>
     <color name="primarydark">#8aacc8</color>
 
-    <color name="secondaryblue">#81d4fa</color>
-    <color name="secondarylight">#b6ffff</color>
-    <color name="secondarydark">#4ba3c7</color>
+    <color name="secondaryblue">#42a5f5</color>
+    <color name="secondarylight">#80d6ff</color>
+    <color name="secondarydark">#0077c2</color>
+
+    <color name="itemcolor">#e1f5fe</color>
 
 </resources>
