@@ -1,9 +1,11 @@
 package com.example.birder.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,14 +44,14 @@ class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
         val fab: View = v.findViewById(R.id.addFromFile)
         fab.setOnClickListener {
             val addFavoritesFragment = AddFavoritesFragment()
-            val supportFragmentManager = childFragmentManager
-            supportFragmentManager.beginTransaction().apply {
+            val manager = (v.context as FragmentActivity).supportFragmentManager
+            manager.beginTransaction().apply {
                 replace(R.id.favoritelayout, addFavoritesFragment)
                 addToBackStack(null)
                 commit()
             }
         }
-        container?.removeAllViews()
+      //  container?.removeAllViews()
         return v
     }
 
@@ -86,5 +88,4 @@ class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
             }
         })
     }
-
 }

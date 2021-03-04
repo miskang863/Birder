@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Log.d("testi", "in main activity")
         val favoritesFragment = FavoritesFragment()
         val mapFragment = MapFragment()
         val birdSearchFragment = BirdSearchFragment()
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     private fun makeCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fl_wrapper, fragment)
+            addToBackStack(null)
             commit()
         }
     }

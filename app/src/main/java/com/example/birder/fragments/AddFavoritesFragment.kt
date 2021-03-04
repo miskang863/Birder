@@ -14,14 +14,13 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -60,6 +59,7 @@ class AddFavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_addfavorites, container, false)
+        setHasOptionsMenu(true)
 
         mBirdViewModel = ViewModelProvider(this).get(BirdViewModel::class.java)
         editText1 = view.findViewById(R.id.editName)
@@ -115,7 +115,7 @@ class AddFavoritesFragment : Fragment() {
             fragmentTransaction.commit()
         }
 
-        container?.removeAllViews()
+        //container?.removeAllViews()
 
         Log.d("testi", "locating")
         fusedLocationClient =
@@ -215,5 +215,10 @@ class AddFavoritesFragment : Fragment() {
                 requestPermissionCode
             )
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        Log.d("testi", "MENU OPTIONS")
+        menu.clear()
     }
 }
