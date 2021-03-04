@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
@@ -99,11 +100,12 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
                 replace(R.id.singleBirdLayout, favoritesFragment)
                 commit()
             }
+
         }
 
         setHasOptionsMenu(true)
 
-        container?.removeAllViews()
+        //container?.removeAllViews()
 
         return view
     }
@@ -181,6 +183,7 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        Log.d("testi", "MENU OPTIONS")
         menu.clear()
         inflater.inflate(R.menu.delete_menu, menu)
     }
