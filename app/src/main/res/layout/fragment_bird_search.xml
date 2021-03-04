@@ -30,6 +30,7 @@
         android:layout_marginBottom="20dp"
         android:contentDescription="@string/searchText"
         android:text="@string/SearchInfo"
+        android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/birdSearchEditText"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -54,6 +55,7 @@
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/Search"
         android:text="@string/Search"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
