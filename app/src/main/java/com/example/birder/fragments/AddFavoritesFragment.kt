@@ -115,8 +115,6 @@ class AddFavoritesFragment : Fragment() {
             fragmentTransaction.commit()
         }
 
-        container?.removeAllViews()
-
         Log.d("testi", "locating")
         fusedLocationClient =
             activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!

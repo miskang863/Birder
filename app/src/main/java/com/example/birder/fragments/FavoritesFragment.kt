@@ -1,6 +1,7 @@
 package com.example.birder.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -49,7 +50,6 @@ class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
                 commit()
             }
         }
-        container?.removeAllViews()
         return v
     }
 
