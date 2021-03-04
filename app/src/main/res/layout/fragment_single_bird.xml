@@ -10,7 +10,7 @@
 
     <ImageView
         android:id="@+id/singleImageView"
-        android:layout_width="197dp"
+        android:layout_width="wrap_content"
         android:layout_height="207dp"
         android:layout_marginTop="32dp"
         android:contentDescription="@string/birdImage"
@@ -27,6 +27,8 @@
         android:layout_marginTop="32dp"
         android:contentDescription="@string/galleryButton"
         android:text="@string/gallery"
+        android:textColor="#000000"
+        app:iconTint="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/singleImageView" />
 
@@ -61,6 +63,8 @@
         android:layout_marginStart="32dp"
         android:contentDescription="@string/cameraButton"
         android:text="@string/camera"
+        android:textColor="#000000"
+        app:iconTint="#FFFFFF"
         app:layout_constraintStart_toEndOf="@+id/singleGalleryButton"
         app:layout_constraintTop_toTopOf="@+id/singleGalleryButton" />
 
@@ -72,6 +76,7 @@
         android:layout_marginBottom="64dp"
         android:contentDescription="@string/update"
         android:text="@string/update"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

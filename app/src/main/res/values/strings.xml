@@ -27,5 +27,6 @@
     <string name="favorite">Favorite</string>
     <string name="search">Search</string>
     <string name="ar_camera">AR Camera</string>
+    <string name="findings">Findings</string>
 
 </resources>
