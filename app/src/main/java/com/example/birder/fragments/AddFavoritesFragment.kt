@@ -100,7 +100,6 @@ class AddFavoritesFragment : Fragment() {
 
             val gallery = Intent(ACTION_OPEN_DOCUMENT, fileProvider)
             startActivityForResult(gallery, galleryImageCode)
-
         }
 
         //Save to database
@@ -110,8 +109,7 @@ class AddFavoritesFragment : Fragment() {
             val fragment: Fragment = FavoritesFragment()
             val fragmentManager: FragmentManager = activity!!.supportFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.relativeLayout, fragment)
-            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.replace(R.id.fl_wrapper, fragment)
             fragmentTransaction.commit()
         }
 

@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.birder.R
 import com.example.birder.data.Bird
@@ -94,13 +95,12 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
         updateButton.setOnClickListener {
             updateBird()
 
+            val manager = (view.context as FragmentActivity).supportFragmentManager
             val favoritesFragment = FavoritesFragment()
-            val supportFragmentManager = childFragmentManager
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.singleBirdLayout, favoritesFragment)
+            manager.beginTransaction().apply {
+                replace(R.id.fl_wrapper, favoritesFragment)
                 commit()
             }
-
         }
 
         setHasOptionsMenu(true)
@@ -109,10 +109,6 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
 
         return view
     }
-
-
-
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

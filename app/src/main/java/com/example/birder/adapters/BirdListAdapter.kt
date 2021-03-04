@@ -35,7 +35,7 @@ class BirdListAdapter : RecyclerView.Adapter<BirdListAdapter.RecyclerViewHolder>
             val singleBirdFragment = SingleBirdFragment(bird)
 
             manager.beginTransaction().apply {
-                replace(R.id.favoritelayout, singleBirdFragment)
+                replace(R.id.fl_wrapper, singleBirdFragment)
                 addToBackStack(null)
                 commit()
             }

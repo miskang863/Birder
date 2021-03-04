@@ -55,6 +55,10 @@ class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
         return v
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.search_menu, menu)
