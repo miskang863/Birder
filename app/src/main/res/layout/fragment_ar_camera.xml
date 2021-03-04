@@ -41,8 +41,6 @@
                 android:src="@drawable/yellowbird"
                 android:contentDescription="@string/yellowbird" />
 
-
-
         </LinearLayout>
     </HorizontalScrollView>
 </FrameLayout>

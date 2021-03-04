@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/white">
+    android:background="@color/primaryblue">
 
     <FrameLayout
         android:id="@+id/fl_wrapper"
@@ -20,9 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="?android:attr/windowBackground"
-        app:itemBackground="@color/purple_500"
-        app:itemIconTint="#ffff"
-        app:itemTextColor="#ffff"
+        app:itemBackground="@color/secondaryblue"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
         app:menu="@menu/nav_menu" />
 
 </RelativeLayout>
