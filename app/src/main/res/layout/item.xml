@@ -4,10 +4,12 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp">
 
+
     <RelativeLayout
         android:id="@+id/rowLayout"
         android:layout_width="match_parent"
-        android:layout_height="121dp">
+        android:layout_height="121dp"
+        android:background="@color/itemcolor">
 
         <ImageView
             android:id="@+id/imageThumbnail"
