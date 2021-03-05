@@ -42,19 +42,18 @@ class BirdSearchFragment : Fragment() {
         searchBtn.setOnClickListener {
             if (editText.text.isNotEmpty()) {
                 getBirdData(editText.text.toString())
+                editText.setText("")
             }
         }
 
         //Search when user hits Enter on keyboard
         editText.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
-                // if the event is a key down event on the enter button
                 if (event.action == KeyEvent.ACTION_DOWN &&
                     keyCode == KeyEvent.KEYCODE_ENTER
                 ) {
                     searchBtn.performClick()
                     hideKeyboard(view)
-                    // clear focus and hide cursor from edit text
                     editText.clearFocus()
                     editText.isCursorVisible = false
 
@@ -92,7 +91,7 @@ class BirdSearchFragment : Fragment() {
             birdDescText = birdDescText.replace("[", "").replace("]", "").capitalize(Locale.ROOT)
 
             if (birdDescText == "Null") {
-                birdDescText = "Description not found"
+                birdDescText = getString(R.string.notFound)
             }
             //Handle the UI
             withContext(Dispatchers.Main) {

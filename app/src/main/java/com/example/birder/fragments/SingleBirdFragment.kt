@@ -198,9 +198,9 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
             Toast.makeText(requireContext(), "Removed ${bird.name}", Toast.LENGTH_SHORT).show()
 
             val favoritesFragment = FavoritesFragment()
-            val supportFragmentManager = childFragmentManager
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.singleBirdLayout, favoritesFragment)
+            val manager = (view?.context as FragmentActivity).supportFragmentManager
+            manager.beginTransaction().apply {
+                replace(R.id.fl_wrapper, favoritesFragment)
                 commit()
             }
         }
