@@ -7,23 +7,22 @@
     android:orientation="horizontal"
     android:padding="10dp">
 
+    <ImageView
+        android:id="@+id/markerImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="@string/birdItem" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
-        <ImageView
-            android:id="@+id/markerImage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:contentDescription="@string/birdItem" />
-
         <TextView
             android:id="@+id/markerTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/black"
