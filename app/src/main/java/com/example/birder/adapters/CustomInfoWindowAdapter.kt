@@ -23,9 +23,6 @@ class CustomInfoWindowAdapter(
     private var mWindow: View =
         LayoutInflater.from(context).inflate(R.layout.custom_info_window, null)
 
-    private lateinit var duckSound: MediaPlayer
-
-
     private fun renderWindowText(marker: Marker, view: View) {
         val title = marker.title
         val titleTextview = view.findViewById<TextView>(R.id.markerTitle)
@@ -47,14 +44,8 @@ class CustomInfoWindowAdapter(
         val birdUri = birdMap.getValue(marker.id)
         imageView.setImageURI(Uri.parse(birdUri))
 
-        duckSound = MediaPlayer.create(view.context, R.raw.duck)
-
-        val soundButton: Button = view.findViewById(R.id.btn_sound)
-
-        soundButton.setOnClickListener {
-            duckSound.start()
-        }
     }
+
 
     override fun getInfoWindow(p0: Marker?): View {
         if (p0 != null) {
