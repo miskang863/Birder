@@ -137,8 +137,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
         locationCallback = object : LocationCallback() {
-            val bitmap = BitmapFactory.decodeResource(context?.resources, R.drawable.owl)
-            val resize = Bitmap.createScaledBitmap(bitmap,120,120, true)
+            val markerIconBitmap = BitmapFactory.decodeResource(context?.resources, R.drawable.owl)
+            val resizeMarkerIconBitmap = Bitmap.createScaledBitmap(markerIconBitmap,120,120, true)
+
             override fun onLocationResult(locationResult: LocationResult) {
                 if (locationResult.locations.isNotEmpty()) {
                     // Gets the items from bird list and presents them on the map as markers with clickable details
@@ -154,13 +155,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                                         }\n" +
                                         getAddress(latLng.latitude, latLng.longitude)
                             )
-                            .icon(BitmapDescriptorFactory.fromBitmap(resize))
+                            .icon(BitmapDescriptorFactory.fromBitmap(resizeMarkerIconBitmap))
                         map.addMarker(markerOptions)
-                        // Zooms in when opening the map
-                        if (firstLoad) {
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11f))
-                            firstLoad = false
-                        }
+
+                    }
+
+                    // Zooms in when opening the map
+                    val lastLocation =  LatLng(locationResult.lastLocation.latitude, locationResult.lastLocation.longitude)
+                    if (firstLoad) {
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 11f))
+                        firstLoad = false
                     }
                 }
             }
