@@ -2,6 +2,8 @@ package com.example.birder.fragments
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +23,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import java.util.*
@@ -131,6 +135,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
         locationCallback = object : LocationCallback() {
+            val bitmap = BitmapFactory.decodeResource(context?.resources, R.drawable.owl)
+            val resize = Bitmap.createScaledBitmap(bitmap,120,120, true)
             override fun onLocationResult(locationResult: LocationResult) {
                 if (locationResult.locations.isNotEmpty()) {
                     // Gets the items from bird list and presents them on the map as markers with clickable details
@@ -146,6 +152,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                                         }\n" +
                                         getAddress(latLng.latitude, latLng.longitude)
                             )
+                            .icon(BitmapDescriptorFactory.fromBitmap(resize))
                         map.addMarker(markerOptions)
                         // Zooms in when opening the map
                         if (firstLoad) {
