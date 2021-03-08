@@ -1,10 +1,12 @@
 package com.example.birder.adapters
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.birder.R
@@ -20,6 +22,8 @@ class CustomInfoWindowAdapter(
     lateinit var bird: Bird
     private var mWindow: View =
         LayoutInflater.from(context).inflate(R.layout.custom_info_window, null)
+
+    private lateinit var duckSound: MediaPlayer
 
 
     private fun renderWindowText(marker: Marker, view: View) {
@@ -43,6 +47,13 @@ class CustomInfoWindowAdapter(
         val birdUri = birdMap.getValue(marker.id)
         imageView.setImageURI(Uri.parse(birdUri))
 
+        duckSound = MediaPlayer.create(view.context, R.raw.duck)
+
+        val soundButton: Button = view.findViewById(R.id.btn_sound)
+
+        soundButton.setOnClickListener {
+            duckSound.start()
+        }
     }
 
     override fun getInfoWindow(p0: Marker?): View {
