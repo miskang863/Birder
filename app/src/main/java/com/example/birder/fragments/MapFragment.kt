@@ -5,32 +5,30 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Geocoder
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.birder.R
-import com.example.birder.adapters.CustomInfoWindowAdapter
 import com.example.birder.data.Bird
 import com.example.birder.data.BirdViewModel
+import com.example.birder.adapters.CustomInfoWindowAdapter
+import com.example.birder.R
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import java.lang.Exception
 import java.util.*
-
 
 class MapFragment : Fragment(), OnMapReadyCallback {
     private var fusedLocationClient: FusedLocationProviderClient? = null
@@ -44,10 +42,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var infoAdapter: CustomInfoWindowAdapter
     private val birdUriMarkerMap = mutableMapOf<String, String>()
 
-    private val myMarker: Marker? = null
-    private lateinit var duckSound: MediaPlayer
 
     private fun getAddress(lat: Double?, lng: Double?): String {
+
         val geoCoder = Geocoder(activity, Locale.getDefault())
         val list = geoCoder.getFromLocation(lat ?: 0.0, lng ?: 0.0, 1)
         return list[0].getAddressLine(0)
@@ -93,8 +90,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val v = inflater.inflate(R.layout.fragment_map, container, false)
         val supportFragmentManager = childFragmentManager
 
-        duckSound = MediaPlayer.create(v.context, R.raw.duck)
-
         val mapFragment = supportFragmentManager.findFragmentById(R.id.myMap) as SupportMapFragment
         mapFragment.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(v.context)
@@ -110,7 +105,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 }
             }
         })
-
         return v
     }
 
@@ -142,11 +136,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         locationRequest!!.fastestInterval = 10000
         locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
-        map.setOnMarkerClickListener(myMarker?.let { onMarkerClick(marker = it) })
-
         locationCallback = object : LocationCallback() {
-            val bitmap = BitmapFactory.decodeResource(context?.resources, R.drawable.owl)
-            val resize = Bitmap.createScaledBitmap(bitmap, 120, 120, true)
+            val markerIconBitmap = BitmapFactory.decodeResource(context?.resources, R.drawable.owl)
+            val resizeMarkerIconBitmap = Bitmap.createScaledBitmap(markerIconBitmap,120,120, true)
+
             override fun onLocationResult(locationResult: LocationResult) {
                 if (locationResult.locations.isNotEmpty()) {
                     // Gets the items from bird list and presents them on the map as markers with clickable details
@@ -162,25 +155,21 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                                         }\n" +
                                         getAddress(latLng.latitude, latLng.longitude)
                             )
-                            .icon(BitmapDescriptorFactory.fromBitmap(resize))
+                            .icon(BitmapDescriptorFactory.fromBitmap(resizeMarkerIconBitmap))
                         map.addMarker(markerOptions)
-                        // Zooms in when opening the map
-                        if (firstLoad) {
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11f))
-                            firstLoad = false
-                        }
+
+                    }
+
+                    // Zooms in when opening the map
+                    val lastLocation =  LatLng(locationResult.lastLocation.latitude, locationResult.lastLocation.longitude)
+                    if (firstLoad) {
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 11f))
+                        firstLoad = false
                     }
                 }
             }
         }
     }
-
-    private fun onMarkerClick(marker: Marker): GoogleMap.OnMarkerClickListener? {
-        if (marker == myMarker) {
-            duckSound.start()
-        }
-    return my
-   }
 
 
     private fun startLocationUpdates() {

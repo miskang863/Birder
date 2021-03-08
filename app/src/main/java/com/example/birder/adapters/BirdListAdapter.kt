@@ -1,7 +1,7 @@
 package com.example.birder.adapters
 
 import android.net.Uri
-import android.util.Log
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

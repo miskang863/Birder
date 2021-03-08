@@ -29,6 +29,7 @@ class BirdSearchFragment : Fragment() {
     private lateinit var birdDescriptionTextView: TextView
     private lateinit var searchImageView: ImageView
     private lateinit var searchImageButton: ImageButton
+    private val defaultImg = "https://images.freeimages.com/images/large-previews/8e8/black-bird-1172941.jpg"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +39,10 @@ class BirdSearchFragment : Fragment() {
         // Inflate the layout for this fragment
         val searchBtn = view.findViewById<Button>(R.id.searchButton)
         val editText = view.findViewById<EditText>(R.id.birdSearchEditText)
+        searchImageView = view!!.findViewById(R.id.searchImageView)
+
+
+        Picasso.get().load(defaultImg).into(searchImageView)
 
         searchBtn.setOnClickListener {
             if (editText.text.isNotEmpty()) {
@@ -71,7 +76,6 @@ class BirdSearchFragment : Fragment() {
         if (view != null) {
             birdNameTextView = view!!.findViewById(R.id.birdNameTextView)
             birdDescriptionTextView = view!!.findViewById(R.id.birdDescriptionTextView)
-            searchImageView = view!!.findViewById(R.id.searchImageView)
             searchImageButton = view!!.findViewById(R.id.searchImageButton)
         }
 
@@ -82,7 +86,7 @@ class BirdSearchFragment : Fragment() {
                 call.bird("query", "json", 2, "pageimages|pageterms", "original", birdSpecies)
 
             val img = response?.query?.pages?.get(0)?.original?.source
-                ?: "https://images.freeimages.com/images/large-previews/8e8/black-bird-1172941.jpg"
+                ?: defaultImg
 
             val birdWikiUrl =
                 "http://en.wikipedia.org/wiki?curid=${response?.query?.pages?.get(0)?.pageid}"

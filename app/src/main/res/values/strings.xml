@@ -29,5 +29,6 @@
     <string name="ar_camera">AR Camera</string>
     <string name="findings">Findings</string>
     <string name="notFound">Oops! Bird not found.</string>
+    <string name="wikipedia">Wikipedia</string>
 
 </resources>
