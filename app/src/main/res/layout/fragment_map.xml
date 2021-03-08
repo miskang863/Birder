@@ -19,4 +19,5 @@
             android:contentDescription="@string/map"
             tools:ignore="FragmentTagUsage" />
     </RelativeLayout>
+
 </FrameLayout>

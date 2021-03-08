@@ -43,7 +43,7 @@ class CustomInfoWindowAdapter(
 
 
         val imageView = view.findViewById<ImageView>(R.id.markerImage)
-        Log.d("testi", "displaying marker id ${marker.id}")
+
         val birdUri = birdMap.getValue(marker.id)
         imageView.setImageURI(Uri.parse(birdUri))
 

@@ -5,11 +5,13 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Geocoder
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -23,11 +25,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import java.util.*
+
 
 class MapFragment : Fragment(), OnMapReadyCallback {
     private var fusedLocationClient: FusedLocationProviderClient? = null
@@ -40,6 +43,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var firstLoad = true
     private lateinit var infoAdapter: CustomInfoWindowAdapter
     private val birdUriMarkerMap = mutableMapOf<String, String>()
+
+    private val myMarker: Marker? = null
+    private lateinit var duckSound: MediaPlayer
 
     private fun getAddress(lat: Double?, lng: Double?): String {
         val geoCoder = Geocoder(activity, Locale.getDefault())
@@ -86,6 +92,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     ): View? {
         val v = inflater.inflate(R.layout.fragment_map, container, false)
         val supportFragmentManager = childFragmentManager
+
+        duckSound = MediaPlayer.create(v.context, R.raw.duck)
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.myMap) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -134,9 +142,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         locationRequest!!.fastestInterval = 10000
         locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
+        map.setOnMarkerClickListener(myMarker?.let { onMarkerClick(marker = it) })
+
         locationCallback = object : LocationCallback() {
             val bitmap = BitmapFactory.decodeResource(context?.resources, R.drawable.owl)
-            val resize = Bitmap.createScaledBitmap(bitmap,120,120, true)
+            val resize = Bitmap.createScaledBitmap(bitmap, 120, 120, true)
             override fun onLocationResult(locationResult: LocationResult) {
                 if (locationResult.locations.isNotEmpty()) {
                     // Gets the items from bird list and presents them on the map as markers with clickable details
@@ -165,6 +175,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    private fun onMarkerClick(marker: Marker): GoogleMap.OnMarkerClickListener? {
+        if (marker == myMarker) {
+            duckSound.start()
+        }
+    return my
+   }
+
 
     private fun startLocationUpdates() {
         if (activity?.let {
@@ -182,5 +199,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
         fusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, null)
     }
+
 
 }
