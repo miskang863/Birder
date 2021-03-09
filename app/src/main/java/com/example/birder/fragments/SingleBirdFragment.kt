@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -16,6 +17,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -64,7 +66,14 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
         editTextDesc.setText(bird.description)
         imageView.setImageURI(Uri.parse(bird.imageUri))
 
-        requestPermission()
+        if (ContextCompat.checkSelfPermission(view.context, Manifest.permission.CAMERA)
+            == PackageManager.PERMISSION_DENIED)
+            activity?.let {
+                ActivityCompat.requestPermissions(
+                    it,
+                    arrayOf(Manifest.permission.CAMERA), 11)
+            }
+
         cameraButton.setOnClickListener {
             val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             photoFile = getPhotoFile(FILE_NAME)
@@ -75,7 +84,12 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
                 photoFile
             )
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
-            startActivityForResult(takePictureIntent, REQUEST_CODE)
+
+            if (activity?.let { it1 -> takePictureIntent.resolveActivity(it1.packageManager) } != null) {
+                startActivityForResult(takePictureIntent, REQUEST_CODE)
+            } else {
+                Toast.makeText(activity,"Unable to open camera", Toast.LENGTH_SHORT).show()
+            }
         }
 
         //Take photo from gallery button
@@ -87,31 +101,21 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
                 "com.example.birder.fileprovider",
                 photoFile
             )
-
             val gallery = Intent(Intent.ACTION_OPEN_DOCUMENT, fileProvider)
             startActivityForResult(gallery, gallery_image_code)
         }
 
         updateButton.setOnClickListener {
             updateBird()
-
-            val manager = (view.context as FragmentActivity).supportFragmentManager
-            val favoritesFragment = FavoritesFragment()
-            manager.beginTransaction().apply {
-                replace(R.id.fl_wrapper, favoritesFragment)
-                commit()
-            }
         }
 
         setHasOptionsMenu(true)
-
-        //container?.removeAllViews()
 
         return view
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+       // super.onActivityResult(requestCode, resultCode, data)
         //Handle gallery image
         if (resultCode == Activity.RESULT_OK && requestCode == gallery_image_code) {
             imageUri = data?.data
@@ -154,9 +158,16 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
                 bird.time
             )
 
-        if (bird != null) {
+        if (name.isNotEmpty() && description.isNotEmpty()) {
             mBirdViewModel.updateBird(updateBird)
             Toast.makeText(requireContext(), "Bird updated!", Toast.LENGTH_LONG).show()
+
+            val manager = (view?.context as FragmentActivity).supportFragmentManager
+            val favoritesFragment = FavoritesFragment()
+            manager.beginTransaction().apply {
+                replace(R.id.fl_wrapper, favoritesFragment)
+                commit()
+            }
         } else {
             Toast.makeText(requireContext(), "Bird update failed!", Toast.LENGTH_LONG).show()
         }
@@ -168,15 +179,6 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
         return File.createTempFile(fileName, ".jpg", storageDirectory)
     }
 
-    private fun requestPermission() {
-        activity?.let {
-            ActivityCompat.requestPermissions(
-                it,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                requestPermissionCode
-            )
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         Log.d("testi", "MENU OPTIONS")

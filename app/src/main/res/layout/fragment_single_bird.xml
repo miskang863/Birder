@@ -14,6 +14,7 @@
         android:layout_height="207dp"
         android:layout_marginTop="32dp"
         android:contentDescription="@string/birdImage"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -32,6 +33,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/singleImageView" />
 
+    <Button
+        android:id="@+id/singleCameraButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="80dp"
+        android:contentDescription="@string/cameraButton"
+        android:text="@string/camera"
+        android:textColor="#000000"
+        app:iconTint="#FFFFFF"
+        app:layout_constraintStart_toEndOf="@+id/singleGalleryButton"
+        app:layout_constraintTop_toTopOf="@+id/singleGalleryButton" />
+
     <EditText
         android:id="@+id/singleEditName"
         android:layout_width="318dp"
@@ -46,8 +60,8 @@
 
     <EditText
         android:id="@+id/singleEditDesc"
-        android:layout_width="317dp"
-        android:layout_height="47dp"
+        android:layout_width="318dp"
+        android:layout_height="53dp"
         android:layout_marginTop="32dp"
         android:hint="@string/description"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,18 +71,6 @@
         android:inputType="text" />
 
     <Button
-        android:id="@+id/singleCameraButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:contentDescription="@string/cameraButton"
-        android:text="@string/camera"
-        android:textColor="#000000"
-        app:iconTint="#FFFFFF"
-        app:layout_constraintStart_toEndOf="@+id/singleGalleryButton"
-        app:layout_constraintTop_toTopOf="@+id/singleGalleryButton" />
-
-    <Button
         android:id="@+id/singleUpdateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,6 +78,7 @@
         android:layout_marginBottom="64dp"
         android:contentDescription="@string/update"
         android:text="@string/update"
+        android:gravity="center"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

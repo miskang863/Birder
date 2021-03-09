@@ -20,16 +20,16 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
+import com.example.birder.R
 import com.example.birder.data.Bird
 import com.example.birder.data.BirdViewModel
-import com.example.birder.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import java.io.File
@@ -70,6 +70,14 @@ class AddFavoritesFragment : Fragment() {
         val button2: Button = view.findViewById(R.id.btn_save)
 
         requestPermission()
+
+        if (ContextCompat.checkSelfPermission(view.context, Manifest.permission.CAMERA)
+            == PackageManager.PERMISSION_DENIED)
+            activity?.let {
+                ActivityCompat.requestPermissions(
+                    it,
+                    arrayOf(Manifest.permission.CAMERA), 11)
+            }
 
 
         //Take photo with camera button
