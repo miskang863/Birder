@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.d("testi", "in main activity")
         val favoritesFragment = FavoritesFragment()
         val mapFragment = MapFragment()
         val birdSearchFragment = BirdSearchFragment()
@@ -66,11 +65,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val fragments = supportFragmentManager.backStackEntryCount
-        Log.d("testi", "fragments count: $fragments")
-        if (fragments == 1) {
-            // make layout invisible since last fragment will be removed
-        }
         super.onBackPressed()
     }
 }
