@@ -69,16 +69,16 @@ class AddFavoritesFragment : Fragment() {
         val button: Button = view.findViewById(R.id.galleryButton)
         val button2: Button = view.findViewById(R.id.btn_save)
 
-        requestPermission()
-
         if (ContextCompat.checkSelfPermission(view.context, Manifest.permission.CAMERA)
-            == PackageManager.PERMISSION_DENIED)
+            == PackageManager.PERMISSION_DENIED
+        )
             activity?.let {
                 ActivityCompat.requestPermissions(
                     it,
-                    arrayOf(Manifest.permission.CAMERA), 11)
+                    arrayOf(Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION),
+                    11
+                )
             }
-
 
         //Take photo with camera button
         cameraButton.setOnClickListener {
@@ -93,10 +93,12 @@ class AddFavoritesFragment : Fragment() {
             )
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
             startActivityForResult(takePictureIntent, REQUEST_CODE)
+
         }
 
         //Take photo from gallery button
         button.setOnClickListener {
+            requestPermission()
             getLastLocation()
             photoFile = getPhotoFile(FILE_NAME)
 
@@ -121,9 +123,6 @@ class AddFavoritesFragment : Fragment() {
             fragmentTransaction.commit()
         }
 
-        //container?.removeAllViews()
-
-        Log.d("testi", "locating")
         fusedLocationClient =
             activity?.let { LocationServices.getFusedLocationProviderClient(it) }!!
 

@@ -67,11 +67,13 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
         imageView.setImageURI(Uri.parse(bird.imageUri))
 
         if (ContextCompat.checkSelfPermission(view.context, Manifest.permission.CAMERA)
-            == PackageManager.PERMISSION_DENIED)
+            == PackageManager.PERMISSION_DENIED
+        )
             activity?.let {
                 ActivityCompat.requestPermissions(
                     it,
-                    arrayOf(Manifest.permission.CAMERA), 11)
+                    arrayOf(Manifest.permission.CAMERA), 11
+                )
             }
 
         cameraButton.setOnClickListener {
@@ -84,12 +86,8 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
                 photoFile
             )
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
+            startActivityForResult(takePictureIntent, REQUEST_CODE)
 
-            if (activity?.let { it1 -> takePictureIntent.resolveActivity(it1.packageManager) } != null) {
-                startActivityForResult(takePictureIntent, REQUEST_CODE)
-            } else {
-                Toast.makeText(activity,"Unable to open camera", Toast.LENGTH_SHORT).show()
-            }
         }
 
         //Take photo from gallery button
@@ -115,7 +113,7 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-       // super.onActivityResult(requestCode, resultCode, data)
+        // super.onActivityResult(requestCode, resultCode, data)
         //Handle gallery image
         if (resultCode == Activity.RESULT_OK && requestCode == gallery_image_code) {
             imageUri = data?.data
