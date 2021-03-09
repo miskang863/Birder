@@ -30,7 +30,6 @@ class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
         setHasOptionsMenu(true)
 
         recyclerView = v.findViewById(R.id.recyclerView)
-        //  recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -49,12 +48,7 @@ class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
                 commit()
             }
         }
-        //  container?.removeAllViews()
         return v
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
