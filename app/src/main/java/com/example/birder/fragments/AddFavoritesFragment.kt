@@ -169,8 +169,6 @@ class AddFavoritesFragment : Fragment() {
         val time = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
         val formattedTime = time.format(formatter)
-        Log.d("testi", formattedTime)
-
         val bird =
             mLocation?.let {
                 Bird(
@@ -205,9 +203,6 @@ class AddFavoritesFragment : Fragment() {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
                     mLocation = location
-                    if (location != null) {
-                        Log.d("testi", location.latitude.toString())
-                    }
                 }
         }
     }
@@ -223,7 +218,6 @@ class AddFavoritesFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d("testi", "MENU OPTIONS")
         menu.clear()
     }
 }
