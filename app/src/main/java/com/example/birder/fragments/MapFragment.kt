@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Geocoder
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,11 +24,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
+
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import java.lang.Exception
+
 import java.util.*
 
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -132,24 +133,24 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             return
         }
         locationRequest = LocationRequest()
-        locationRequest!!.interval = 10000
-        locationRequest!!.fastestInterval = 10000
+        locationRequest!!.interval = 5000
+        locationRequest!!.fastestInterval = 5000
         locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
         locationCallback = object : LocationCallback() {
             val markerIconBitmap = BitmapFactory.decodeResource(context?.resources, R.drawable.owl)
-            val resizeMarkerIconBitmap = Bitmap.createScaledBitmap(markerIconBitmap,120,120, true)
+            val resizeMarkerIconBitmap = Bitmap.createScaledBitmap(markerIconBitmap, 120, 120, true)
 
             override fun onLocationResult(locationResult: LocationResult) {
                 if (locationResult.locations.isNotEmpty()) {
                     // Gets the items from bird list and presents them on the map as markers with clickable details
-                    birdList.forEach {
-                        val latLng = LatLng(it.latitude, it.longitude)
+                    birdList.forEach { Bird ->
+                        val latLng = LatLng(Bird.latitude, Bird.longitude)
                         Log.d("testi", latLng.toString())
                         val markerOptions = MarkerOptions().position(latLng)
-                            .title(it.name)
+                            .title(Bird.name)
                             .snippet(
-                                "${it.description}\n" +
+                                "${Bird.description}\n" +
                                         "Y: ${"%.4f".format(latLng.latitude)} X: ${
                                             "%.4f".format(latLng.longitude)
                                         }\n" +
@@ -158,10 +159,30 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                             .icon(BitmapDescriptorFactory.fromBitmap(resizeMarkerIconBitmap))
                         map.addMarker(markerOptions)
 
+                        val duckSound = MediaPlayer.create(activity, R.raw.duck)
+                        val crowSound = MediaPlayer.create(activity, R.raw.crow)
+                        val yellowSound = MediaPlayer.create(activity, R.raw.yellowbird)
+
+                        map.setOnInfoWindowClickListener {
+                            when {
+                                it.title.contains("tit", true) -> {
+                                    yellowSound.start()
+                                }
+                                it.title.contains("duck", true) -> {
+                                    duckSound.start()
+                                }
+                                it.title.contains("crow", true) -> {
+                                    crowSound.start()
+                                }
+                            }
+                        }
                     }
 
                     // Zooms in when opening the map
-                    val lastLocation =  LatLng(locationResult.lastLocation.latitude, locationResult.lastLocation.longitude)
+                    val lastLocation = LatLng(
+                        locationResult.lastLocation.latitude,
+                        locationResult.lastLocation.longitude
+                    )
                     if (firstLoad) {
                         map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 11f))
                         firstLoad = false

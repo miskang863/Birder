@@ -29,12 +29,13 @@ class BirdSearchFragment : Fragment() {
     private lateinit var birdDescriptionTextView: TextView
     private lateinit var searchImageView: ImageView
     private lateinit var searchImageButton: ImageButton
-    private val defaultImg = "https://images.freeimages.com/images/large-previews/8e8/black-bird-1172941.jpg"
+    private val defaultImg =
+        "https://images.freeimages.com/images/large-previews/8e8/black-bird-1172941.jpg"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = inflater.inflate(R.layout.fragment_bird_search, container, false)
         // Inflate the layout for this fragment
         val searchBtn = view.findViewById<Button>(R.id.searchButton)

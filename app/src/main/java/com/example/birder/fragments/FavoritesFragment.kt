@@ -29,8 +29,6 @@ class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
         val v = inflater.inflate(R.layout.fragment_favorites, container, false)
         setHasOptionsMenu(true)
 
-        Log.d("testi", "NYT ON FAVEIS")
-
         recyclerView = v.findViewById(R.id.recyclerView)
         //  recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
@@ -51,7 +49,7 @@ class FavoritesFragment : Fragment(), SearchView.OnQueryTextListener {
                 commit()
             }
         }
-      //  container?.removeAllViews()
+        //  container?.removeAllViews()
         return v
     }
 

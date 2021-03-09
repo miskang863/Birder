@@ -1,5 +1,6 @@
 package com.example.birder.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
@@ -17,22 +18,24 @@ class CustomInfoWindowAdapter(
 ) : GoogleMap.InfoWindowAdapter {
 
     lateinit var bird: Bird
+
+    @SuppressLint("InflateParams")
     private var mWindow: View =
         LayoutInflater.from(context).inflate(R.layout.custom_info_window, null)
 
     private fun renderWindowText(marker: Marker, view: View) {
         val title = marker.title
-        val titleTextview = view.findViewById<TextView>(R.id.markerTitle)
+        val titleTextView = view.findViewById<TextView>(R.id.markerTitle)
 
         if (title != null) {
-            titleTextview.text = title
+            titleTextView.text = title
         }
 
         val snippet = marker.snippet
-        val snippetTextview = view.findViewById<TextView>(R.id.markerSnippet)
+        val snippetTextView = view.findViewById<TextView>(R.id.markerSnippet)
 
         if (snippet != null) {
-            snippetTextview.text = snippet
+            snippetTextView.text = snippet
         }
 
 

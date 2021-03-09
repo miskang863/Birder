@@ -1,10 +1,12 @@
 package com.example.birder
 
+import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.birder.fragments.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity() {
                 99
             )
         }
+
 
         bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
