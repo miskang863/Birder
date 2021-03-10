@@ -27,6 +27,7 @@ import com.google.android.gms.maps.SupportMapFragment
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
 import java.util.*
@@ -42,6 +43,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var firstLoad = true
     private lateinit var infoAdapter: CustomInfoWindowAdapter
     private val birdUriMarkerMap = mutableMapOf<String, String>()
+    private var markerArray: Array<Marker> = emptyArray()
 
 
     private fun getAddress(lat: Double?, lng: Double?): String {
@@ -99,11 +101,13 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mBirdViewModel = ViewModelProvider(this).get(BirdViewModel::class.java)
         mBirdViewModel.readAllData.observe(viewLifecycleOwner, { bird ->
             run {
-                birdList = bird
-
-                for ((x, n) in birdList.withIndex()) {
-                    birdUriMarkerMap["m$x"] = n.imageUri
+                //Removes all markers
+                markerArray.forEach {
+                    it.remove()
                 }
+
+                birdList = bird
+                addMarkers()
             }
         })
         return v
@@ -114,16 +118,58 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         stopLocationUpdates()
     }
 
+    private fun addMarkers() {
+        val markerIconBitmap = BitmapFactory.decodeResource(context?.resources, R.drawable.owl)
+        val resizeMarkerIconBitmap = Bitmap.createScaledBitmap(markerIconBitmap, 120, 120, true)
+
+        birdList.forEach { Bird ->
+            val latLng = LatLng(Bird.latitude, Bird.longitude)
+            val markerOptions = MarkerOptions().position(latLng)
+                .title(Bird.name)
+                .snippet(
+                    "${Bird.description}\n" +
+                            "Y: ${"%.4f".format(latLng.latitude)} X: ${
+                                "%.4f".format(latLng.longitude)
+                            }\n" +
+                            getAddress(latLng.latitude, latLng.longitude)
+                )
+                .icon(BitmapDescriptorFactory.fromBitmap(resizeMarkerIconBitmap))
+
+            val marker = map.addMarker(markerOptions)
+            markerArray += marker
+            birdUriMarkerMap[marker.id] = Bird.imageUri
+
+            val duckSound = MediaPlayer.create(activity, R.raw.duck)
+            val crowSound = MediaPlayer.create(activity, R.raw.crow)
+            val yellowSound = MediaPlayer.create(activity, R.raw.yellowbird)
+
+            //Set up bird sounds on infowindows
+            map.setOnInfoWindowClickListener {
+                when {
+                    it.title.contains("tit", true) -> {
+                        yellowSound.start()
+                    }
+                    it.title.contains("duck", true) -> {
+                        duckSound.start()
+                    }
+                    it.title.contains("crow", true) -> {
+                        crowSound.start()
+                    }
+                }
+            }
+            //Set up custom info windows
+            infoAdapter = CustomInfoWindowAdapter(requireContext(), birdUriMarkerMap)
+            map.setInfoWindowAdapter(infoAdapter)
+        }
+    }
+
     private fun stopLocationUpdates() {
         fusedLocationClient?.removeLocationUpdates(locationCallback)
     }
 
-
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         map.uiSettings.isZoomControlsEnabled = true
-        infoAdapter = CustomInfoWindowAdapter(requireContext(), birdUriMarkerMap)
-        map.setInfoWindowAdapter(infoAdapter)
         getLocationAccess()
         getLocationUpdates()
     }
@@ -138,45 +184,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
         locationCallback = object : LocationCallback() {
-            val markerIconBitmap = BitmapFactory.decodeResource(context?.resources, R.drawable.owl)
-            val resizeMarkerIconBitmap = Bitmap.createScaledBitmap(markerIconBitmap, 120, 120, true)
 
             override fun onLocationResult(locationResult: LocationResult) {
+                // map.clear()
                 if (locationResult.locations.isNotEmpty()) {
                     // Gets the items from bird list and presents them on the map as markers with clickable details
-                    birdList.forEach { Bird ->
-                        val latLng = LatLng(Bird.latitude, Bird.longitude)
-                        Log.d("testi", latLng.toString())
-                        val markerOptions = MarkerOptions().position(latLng)
-                            .title(Bird.name)
-                            .snippet(
-                                "${Bird.description}\n" +
-                                        "Y: ${"%.4f".format(latLng.latitude)} X: ${
-                                            "%.4f".format(latLng.longitude)
-                                        }\n" +
-                                        getAddress(latLng.latitude, latLng.longitude)
-                            )
-                            .icon(BitmapDescriptorFactory.fromBitmap(resizeMarkerIconBitmap))
-                        map.addMarker(markerOptions)
 
-                        val duckSound = MediaPlayer.create(activity, R.raw.duck)
-                        val crowSound = MediaPlayer.create(activity, R.raw.crow)
-                        val yellowSound = MediaPlayer.create(activity, R.raw.yellowbird)
-
-                        map.setOnInfoWindowClickListener {
-                            when {
-                                it.title.contains("tit", true) -> {
-                                    yellowSound.start()
-                                }
-                                it.title.contains("duck", true) -> {
-                                    duckSound.start()
-                                }
-                                it.title.contains("crow", true) -> {
-                                    crowSound.start()
-                                }
-                            }
-                        }
-                    }
 
                     // Zooms in when opening the map
                     val lastLocation = LatLng(
