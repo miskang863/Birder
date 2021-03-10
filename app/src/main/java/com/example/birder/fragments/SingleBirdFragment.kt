@@ -128,6 +128,8 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
             }
             bird.imageUri = imageUri.toString()
             imageView.setImageURI(imageUri)
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
         }
 
         //Handle camera image
@@ -179,7 +181,6 @@ class SingleBirdFragment(var bird: Bird) : Fragment() {
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d("testi", "MENU OPTIONS")
         menu.clear()
         inflater.inflate(R.menu.delete_menu, menu)
     }
