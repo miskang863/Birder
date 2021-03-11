@@ -190,6 +190,7 @@ class AddFavoritesFragment : Fragment() {
         }
     }
 
+    //GPS location
     private fun getLastLocation() {
         if (activity?.let {
                 ActivityCompat.checkSelfPermission(

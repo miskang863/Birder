@@ -106,18 +106,18 @@ class ARCameraFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    //Model settings
     private fun setModel() {
         val duckUri = Uri.parse("file:///android_asset/duck/duck.gltf")
         val crowUri = Uri.parse("file:///android_asset/crow/crow.gltf")
         val yellowUri = Uri.parse("file:///android_asset/yellowbird/yellowbird.gltf")
-
-        //  val duckUri = Uri.parse("https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf")
 
         ModelRenderable.builder()
             .setSource(
                 activity,
                 RenderableSource.builder()
                     .setSource(activity, duckUri, RenderableSource.SourceType.GLTF2)
+                        //Change the size of the model
                     .setScale(0.15f)
                     .setRecenterMode(RenderableSource.RecenterMode.ROOT)
                     .build()
